@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class MapTileStats : MonoBehaviour
 {
-    private float wetValue;     // how wet this tile is 
-    private float heatValue;    // how hot this tile is
+    public float wetValue;     // how wet this tile is 
+    public float heatValue;    // how hot this tile is
 
-    private TileType CurrentTileType;   // what type of tile this is
+    public TileType CurrentTileType = TileType.Water;   // what type of tile this is
 
     private int locationHor;    // the location of the tile horizontally
     private int locationVert;   // the location of the tile vertically
@@ -18,6 +18,86 @@ public class MapTileStats : MonoBehaviour
 
         // changes the game object position appropriately based on the tile location and tile offset
         this.gameObject.transform.position = new Vector2((float) x, (float) y) + ArrayOffset;
+    }
+
+    public void CalculateType()
+    {
+        if(wetValue >= 0.5f)
+        {
+            if(heatValue > 0.60f)
+            {
+                CurrentTileType = TileType.RainForest;
+            }
+            
+            else if(heatValue < 0.60f && heatValue >= 0.40f)
+            {
+                CurrentTileType = TileType.Swamp;
+            }
+            else
+            {
+                CurrentTileType = TileType.Forest;
+            }
+        }
+        else
+        {
+            if(heatValue > 0.60f)
+            {
+                CurrentTileType = TileType.Desert;
+            }
+            else if(heatValue <= 0.60f && heatValue >= 0.4f)
+            {
+                CurrentTileType = TileType.Plains;
+            }
+            else
+            {
+                CurrentTileType = TileType.Snowlands;
+            }
+        }
+    }
+
+    public void SetType()
+    {
+        Color Colour = Color.white;
+        switch(CurrentTileType)
+        {
+            case TileType.Plains:
+            {
+                Colour = Color.green;
+                break;
+            }
+            case TileType.Desert:
+            {
+                Colour = Color.yellow;
+                break;
+            }
+            case TileType.RainForest:
+            {
+                Colour = Color.magenta;
+                break;
+            }
+            case TileType.Snowlands:
+            {
+                Colour = Color.cyan;
+                break;
+            }
+            case TileType.Forest:
+            {
+                Colour = Color.grey;
+                break;
+            }
+            case TileType.Swamp:
+            {
+                Colour = Color.black;
+                break;
+            }
+            case TileType.Water:
+            {
+                Colour = Color.blue;
+                break;
+            }
+        }
+
+        this.gameObject.GetComponent<SpriteRenderer>().color = Colour;
     }
     
 }
