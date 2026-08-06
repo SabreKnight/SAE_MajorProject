@@ -20,7 +20,9 @@ public class MapGenManager : MonoBehaviour
     private float HotNOSX;
     private float HotNOSY;
 
-    [SerializeField] private float perlinScale = 0.1f;
+    [SerializeField] private float WetScale = 0.1f;
+    [SerializeField] private float HotScale = 0.1f;
+
 #endregion
 
     private void Start()
@@ -81,10 +83,10 @@ public class MapGenManager : MonoBehaviour
 
     private void StatsMethod(MapTileStats currentTile, int x, int y)   // applies the wet stat value to the tile 
     {
-        float wetX = (WetNOSX + (float)x) / perlinScale;
-        float wetY = (WetNOSY + (float)y) / perlinScale;
-        float hotX = (HotNOSX + (float)x) / perlinScale;
-        float hotY = (HotNOSY + (float)y) / perlinScale;
+        float wetX = (WetNOSX + (float)x) / WetScale;
+        float wetY = (WetNOSY + (float)y) / WetScale;
+        float hotX = (HotNOSX + (float)x) / HotScale;
+        float hotY = (HotNOSY + (float)y) / HotScale;
 
         currentTile.wetValue = Mathf.PerlinNoise(wetX, wetY);
         currentTile.heatValue = Mathf.PerlinNoise(hotX, hotY);

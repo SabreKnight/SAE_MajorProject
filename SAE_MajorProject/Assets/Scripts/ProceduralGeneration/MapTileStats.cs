@@ -24,12 +24,12 @@ public class MapTileStats : MonoBehaviour
     {
         if(wetValue >= 0.5f)
         {
-            if(heatValue > 0.60f)
+            if(heatValue > 0.52f)
             {
                 CurrentTileType = TileType.RainForest;
             }
             
-            else if(heatValue < 0.60f && heatValue >= 0.40f)
+            else if(heatValue < 0.52f && heatValue >= 0.47f)
             {
                 CurrentTileType = TileType.Swamp;
             }
@@ -40,11 +40,11 @@ public class MapTileStats : MonoBehaviour
         }
         else
         {
-            if(heatValue > 0.60f)
+            if(heatValue > 0.52f)
             {
                 CurrentTileType = TileType.Desert;
             }
-            else if(heatValue <= 0.60f && heatValue >= 0.4f)
+            else if(heatValue <= 0.52f && heatValue >= 0.47f)
             {
                 CurrentTileType = TileType.Plains;
             }

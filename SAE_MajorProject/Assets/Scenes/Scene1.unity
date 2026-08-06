@@ -198,8 +198,9 @@ MonoBehaviour:
   ArrayOffset: {x: -128, y: -128}
   grid: {fileID: 361376016}
   SquareSprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  SeedValue: 10
-  perlinScale: 50
+  SeedValue: 80
+  WetScale: 50
+  HotScale: 50
 --- !u!4 &517547280
 Transform:
   m_ObjectHideFlags: 0
