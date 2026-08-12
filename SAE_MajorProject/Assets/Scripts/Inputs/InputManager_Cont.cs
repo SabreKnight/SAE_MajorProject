@@ -4,27 +4,34 @@ using UnityEngine.InputSystem;
 public class InputManager_Cont : MonoBehaviour
 {
     public InputActionAsset InputAction;
-    public InputAction moveAction;
-    [SerializeField] private float moveSpeed = 5f;
+
+# region Movement
+    private InputAction moveAction;
+    [Header ("Movement")]
+    [SerializeField] private float moveSpeed = 0.01f;
     [SerializeField] private GameObject PlayerObject;
-    //[SerializeField] private Rigidbody2D PlayerRigid;
     [SerializeField] private Vector2 moveValue;
+# endregion
     
     void OnEnable()
     {
         moveAction = InputSystem.actions.FindAction("Move");
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         moveValue = moveAction.ReadValue<Vector2>();
         MovePlayer(moveValue);
 
     }
 
-    private void MovePlayer(Vector2 moveValue)
+    private void MovePlayer(Vector2 moveValue) // move to model and view class
     {
         PlayerObject.transform.position += (Vector3)(moveValue * moveSpeed);
-        //PlayerRigid.AddForce(moveValue * moveSpeed);
     }
+
+
+
+
+
 }
