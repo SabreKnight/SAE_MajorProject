@@ -9,34 +9,118 @@ public class InventoryManager : MonoBehaviour
 
     //list of items that make up the inventory
     private int inventorySize = 10;
-    public List<Item> InventoryList = new List<Item>();
+    [SerializeField] public List<InstantiatedItem> InventoryList = new List<InstantiatedItem>();
 
-    private List<Item> HotInventoryList = new List<Item>();
+    private List<InstantiatedItem> HotInventoryList = new List<InstantiatedItem>();
     //private int hotListsize = 3;
     //private int itemIndex = 0;
 
-    // attempts to add an item to a stack, or create a new stack in inventory. returns how many DID NOT enter the inventory
-    public int AddItemToInventory(Item newItem, int newcount) 
+    private void Awake()
     {
-        int newItemCount = newcount;
-        if(InventoryLookup.ContainsKey(newItem))    // checks if there is a reference to the item already in the inventory
-        {
-            foreach(int index in InventoryLookup[newItem])  // goes through each stack of the item
-            {
-                Item InventoryItem = InventoryList[index];
-                if(InventoryItem.CurrentStackSize != InventoryItem.stackSizeLimit)  // checks if the stack is full
-                {
-                    int combinedSize = newItemCount + InventoryItem.CurrentStackSize;
+        //UpdateInventorySize();
+    }
 
-                    if(combinedSize > InventoryItem.stackSizeLimit) // checks if the combined size is greater than the stack size
+    public void UpdateInventorySize()
+    {
+        if(InventoryList.Count < inventorySize)
+        {
+            for(int I = 0 ; I < inventorySize; I++) // goes through each item slot in the inventory
+            {
+                InventoryList.Add(null);
+                Debug.Log("Inventory size has been updated to: " + InventoryList.Count);
+
+                if(InventoryList.Count == inventorySize)
+                {
+                    Debug.Log("Inventory has reach max size of: " + InventoryList.Count + " which should be equal to: " + inventorySize);
+                    return;
+                }
+                
+            }
+
+             Debug.Log("max items have been added to the inventory without reaching max value");
+        }
+    }
+
+    public void UpdateLookup()
+    {
+        InventoryLookup.Clear();
+        for(int I = 0 ; I < InventoryList.Count; I++) // goes through each item slot in the inventory
+        {
+            Item item = InventoryList[I].itemType;
+            if(item != null)
+            {
+                if(InventoryLookup.ContainsKey(item))
+                {
+                    bool confirmed = false;
+                    foreach(int index in InventoryLookup[item])
                     {
-                        InventoryItem.CurrentStackSize = InventoryItem.stackSizeLimit;
-                        newItemCount = InventoryItem.CurrentStackSize - combinedSize;
+                        if(I == index)
+                        {
+                            confirmed = true;
+                            break;
+                        }
+                    }
+
+                    if(confirmed == false)
+                    {
+                        int[] newArray = new int[InventoryLookup[item].Length + 1];
+                        int[] dictArray = InventoryLookup[item];
+
+                        for(int i = 0 ; i < dictArray.Length; i++)
+                        {
+                            newArray[i] = dictArray[i];
+                        }
+
+                        newArray[InventoryLookup[item].Length] = I;
+                        InventoryLookup[item] = newArray;
+                        Debug.Log("item ( " + item.ItemName + ") has been updated in lookup to add index: " + I );
+                    }
+                }
+                else
+                {
+                    int[] newArray = new int[1];
+                    newArray[0] = I;
+                    InventoryLookup.Add(item, newArray);
+                    Debug.Log("New item (" + item.ItemName + ") added to lookup at: " + I);
+                }       
+            }
+        }
+
+        foreach(KeyValuePair<Item, int[]> item in InventoryLookup)
+        {
+            string text = item.Key.ItemName + ": all indexes include: ";
+            foreach(int index in item.Value)
+            {
+                text += index + ", ";
+            }
+
+            Debug.Log(text);
+        }
+    }
+
+    // attempts to add an item to a stack, or create a new stack in inventory. returns how many DID NOT enter the inventory
+    public int AddItemToInventory(InstantiatedItem newItem) 
+    {
+        UpdateLookup();
+        int newItemCount = newItem.currentStackSize;
+        if(InventoryLookup.ContainsKey(newItem.itemType))    // checks if there is a reference to the item already in the inventory
+        {
+            foreach(int index in InventoryLookup[newItem.itemType])  // goes through each stack of the item
+            {
+                InstantiatedItem InventoryItem = InventoryList[index];
+                if(InventoryItem.currentStackSize != InventoryItem.itemType.stackSizeLimit)  // checks if the stack is full
+                {
+                    int combinedSize = newItemCount + InventoryItem.currentStackSize;
+
+                    if(combinedSize > InventoryItem.itemType.stackSizeLimit) // checks if the combined size is greater than the stack size
+                    {
+                        InventoryItem.currentStackSize = InventoryItem.itemType.stackSizeLimit;
+                        newItemCount = combinedSize - InventoryItem.currentStackSize ;
                         Debug.Log("filled a stack with " + newItemCount + " left over");
                     }
                     else    // combined size fits in the stack
                     {
-                        InventoryItem.CurrentStackSize = combinedSize;  // adds the items to the list 
+                        InventoryItem.currentStackSize = combinedSize;  // adds the items to the list 
                         Debug.Log("all items added successfully");
                         return 0;   // returns 0 as all items were collected and added to inventory
                     }
@@ -46,37 +130,40 @@ public class InventoryManager : MonoBehaviour
 
         while(newItemCount > 0) // makes sure to sort out all the new items
         {
-            if(InventoryList.Count == inventorySize)    // checks if the inventory is full 
-            {
-                Debug.Log("Inventory is full");
-                return newItemCount;    // doesn't add any of the items
-            }
 
             for(int I = 0 ; I < inventorySize; I++) // goes through each item slot in the inventory
             {
-                if(InventoryList[I] != null)    // skips if there is already an item in that slot
+                if(InventoryList[I].itemType != null)    // skips if there is already an item in that slot
                 {
-                    Debug.Log("Stack " + I + " has non-applicable items");
+                    Debug.Log("Stack " + I + " has non-applicable items: " );
                     continue;
                 }
 
-                Item itemobj = ScriptableObject.Instantiate(newItem);    // creates a new instances of the item
+                InventoryList[I].itemType = newItem.itemType;                     // adds the item to the inventory
+                InventoryList[I].currentStackSize = newItemCount;        // sets the item current for the new stack
 
-                InventoryList[I] = itemobj;                     // adds the item to the inventory
-                itemobj.CurrentStackSize = newItemCount;        // sets the item current for the new stack
-
-                if(newItemCount > itemobj.stackSizeLimit)       // checks if the additional items surpass the stack size limit
+                if(newItemCount > InventoryList[I].itemType.stackSizeLimit)       // checks if the additional items surpass the stack size limit
                 {
                     Debug.Log("items filled a new stack");
                     // gets the value of how much it goes over the stack size limit
-                    newItemCount = itemobj.CurrentStackSize - itemobj.stackSizeLimit;     
-                    itemobj.CurrentStackSize = itemobj.stackSizeLimit;  // sets the stack to full
+                    newItemCount = InventoryList[I].currentStackSize - newItem.itemType.stackSizeLimit;     
+                    InventoryList[I].currentStackSize = newItem.itemType.stackSizeLimit;  // sets the stack to full
+                }
+                else
+                {
+                    newItemCount = 0;
+                    break;
                 }
             }
 
         }
         Debug.Log("All items added");
         return 0;
+    }
+
+    private void NewInventorySlot()
+    {
+
     }
 
 

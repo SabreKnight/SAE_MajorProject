@@ -69,7 +69,7 @@ public class InputManager_Cont : MonoBehaviour
         if(InteractAction.WasPressedThisFrame())    // checks interact button (E Key)
         {
 
-            Debug.Log("Player clicked E to Interact");
+            Debug.Log("Player clicked E to Interact, mouse position is: " + lookDirection);
         }
 
         if(EscapeAction.WasPressedThisFrame())  // checks if Escape has been selected (ESC Key)

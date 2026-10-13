@@ -40,24 +40,30 @@ public class InventoryDebugEditor : EditorWindow
             AddItems();
         }
 
+        inventoryButtons();
+
     }
 
     void ListItems()
     {
-        
-        foreach(Item item in inventoryScript.InventoryList)
+        if(inventoryScript.InventoryList.Count < 1)
+        {
+            EditorGUILayout.LabelField("No inventory slots found");
+        }
+
+        foreach(InstantiatedItem item in inventoryScript.InventoryList)
         {
             
             GUILayout.Space(spacingSize);
             EditorGUILayout.BeginHorizontal();
-            if(item == null)
+            if(item.itemType == null)
             {
                 EditorGUILayout.LabelField("Null item");
             }
             else
             {
-                EditorGUILayout.LabelField("Item:  " + item.ItemName); // displays enemy name
-                EditorGUILayout.LabelField("Count:  " + item.CurrentStackSize);  // displays kill count
+                EditorGUILayout.LabelField("Item:  " + item.itemType.ItemName); // displays enemy name
+                EditorGUILayout.LabelField("Count:  " + item.currentStackSize);  // displays kill count
             }
             EditorGUILayout.EndHorizontal();
         }
@@ -69,7 +75,30 @@ public class InventoryDebugEditor : EditorWindow
         itemcount = EditorGUILayout.IntField("Item amount to add", itemcount);
         if (GUILayout.Button("Add Items"))
         {
-            inventoryScript.AddItemToInventory(CurrentItemType, itemcount);
+            InstantiatedItem newItem = new InstantiatedItem(CurrentItemType, itemcount);
+            int returnVal = inventoryScript.AddItemToInventory(newItem);
+            if(returnVal > 0)
+            {
+                Debug.Log( returnVal + " items have not been added");
+            }
+            else
+            {
+                Debug.Log(" all items were added");
+            }
         }
+
+    }
+    void inventoryButtons()
+    {
+        if (GUILayout.Button("Update Dictionary"))
+        {
+            inventoryScript.UpdateLookup();
+        }
+
+        if (GUILayout.Button("Update inventory count"))
+        {
+            inventoryScript.UpdateInventorySize();
+        }
+
     }
 }
