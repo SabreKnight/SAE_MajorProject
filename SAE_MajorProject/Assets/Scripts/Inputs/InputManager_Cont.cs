@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public class InputManager_Cont : MonoBehaviour
 {
     public InputActionAsset InputAction;
+    public InteractionManager interactionScript;
 
 # region Movement Inputs
     private InputAction moveAction;
@@ -33,7 +34,11 @@ public class InputManager_Cont : MonoBehaviour
 # region PointingDirection
 
     private InputAction lookAction;
-    [SerializeField] private Vector2 lookDirection;
+    private InputAction MousePositionAction;
+    [SerializeField] private Vector2 Mouseposition;
+    [SerializeField] private Vector2 MouseDirection = Vector2.zero;
+    [SerializeField] private Vector2 TrueLookdirection;
+    private int UpdateCounter = 0;
 
 # endregion
     
@@ -48,7 +53,8 @@ public class InputManager_Cont : MonoBehaviour
         shiftAction = InputSystem.actions.FindAction("Sprint");
         InteractAction = InputSystem.actions.FindAction("Interact");
         EscapeAction = InputSystem.actions.FindAction("Escape");
-        lookAction = InputSystem.actions.FindAction("Look");
+        lookAction = InputSystem.actions.FindAction("Look Direction");
+        MousePositionAction = InputSystem.actions.FindAction("Mouse Position");
     }
 
     private void Update()
@@ -56,7 +62,19 @@ public class InputManager_Cont : MonoBehaviour
         CheckMisc();
         CheckLeftMouseInput();
         CheckRightMouseInput();
+        UpdateModel();
     }
+
+    private void FixedUpdate()
+    {
+        MousePointer();
+    }
+
+    private void UpdateModel()
+    {
+        interactionScript.MoveHitmarker(TrueLookdirection);
+    }
+    
 
     private void CheckMisc()    // checks any miscellanious inputs short enough for just 1 functions
     {
@@ -64,17 +82,40 @@ public class InputManager_Cont : MonoBehaviour
         moveValue = moveAction.ReadValue<Vector2>();    // checks movement values for the player
         MovePlayer(moveValue);  // calls movement script
 
-        lookDirection = lookAction.ReadValue<Vector2>(); // gets players normalised mouse position
-
         if(InteractAction.WasPressedThisFrame())    // checks interact button (E Key)
         {
-
-            Debug.Log("Player clicked E to Interact, mouse position is: " + lookDirection);
+            Debug.Log("Player clicked E to Interact, mouse position is: " + Mouseposition);
         }
 
         if(EscapeAction.WasPressedThisFrame())  // checks if Escape has been selected (ESC Key)
         {
             Debug.Log("Player clicked Escape to escape");
+        }
+    }
+
+    private void MousePointer()
+    {
+        if(UpdateCounter != 8)  // games slows due to too many updates, this slows the updates down.
+        {
+            UpdateCounter ++;
+            return;
+        }
+        else
+        {
+            UpdateCounter = 0;
+        }
+
+        // this gets the direction based on the mouse position on the screen
+        //Vector2 TempMouseVal = (lookAction.ReadValue<Vector2>() - new Vector2(Screen.width / 2f, Screen.height / 2f));
+
+        // this gets the direction based on the mouse position in relation to the player character
+        Vector2 TempMouseVal = (Camera.main.ScreenToWorldPoint(lookAction.ReadValue<Vector2>()) - interactionScript.gameObject.transform.position);
+        
+        if(MouseDirection != TempMouseVal) // gets players normalised mouse position
+        {
+            MouseDirection = TempMouseVal;
+
+            TrueLookdirection = MouseDirection.normalized;
         }
     }
     
@@ -89,6 +130,7 @@ public class InputManager_Cont : MonoBehaviour
 
         if(rightMouse.WasPressedThisFrame())
         {
+            
             //Debug.Log("Right Mouse was pressed this frame");
         }
 
@@ -109,7 +151,8 @@ public class InputManager_Cont : MonoBehaviour
 
         if(leftMouse.WasPressedThisFrame())
         {
-            Debug.Log("Left Mouse was pressed this frame");
+            interactionScript.useleftClickTool();
+           // Debug.Log("Left Mouse was pressed this frame");
         }
 
         if(leftMouse.WasReleasedThisFrame())
@@ -124,6 +167,10 @@ public class InputManager_Cont : MonoBehaviour
     private void MovePlayer(Vector2 moveValue) // move to model and view class
     {
         PlayerObject.transform.position += (Vector3)(moveValue * CheckSprint() * 0.01f );
+        if(moveValue != Vector2.zero)
+        {
+            TrueLookdirection = moveValue;
+        }
     }
 
     private float CheckSprint() // checks if the sprint key is pressed, and returns an appropriate value to the movement function

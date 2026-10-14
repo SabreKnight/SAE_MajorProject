@@ -6,7 +6,7 @@ public class Item : ScriptableObject
     // this stores the data for a type of item
     public string ItemName;
     public UseType type;
-    public Sprite InventorySprite;
+    public Sprite inventorySprite;
     public int stackSizeLimit = 50;
 
     // scene object effector needed for tools

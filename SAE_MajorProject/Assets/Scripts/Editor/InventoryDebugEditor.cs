@@ -15,7 +15,7 @@ public class InventoryDebugEditor : EditorWindow
     [MenuItem("Major Project/Inventory Debug")]
     public static void ShowWindow()
     {
-        InventoryDebugEditor window = GetWindow<InventoryDebugEditor>("Inventory Debug");
+            InventoryDebugEditor window = GetWindow<InventoryDebugEditor>("Inventory Debug");
     }
 
     void OnGUI()
@@ -32,17 +32,15 @@ public class InventoryDebugEditor : EditorWindow
 
         inventoryScript = (InventoryManager)EditorGUILayout.ObjectField("Inventory", inventoryScript, typeof(InventoryManager), true);
 
-        CurrentItemType = (Item)EditorGUILayout.ObjectField("Item Type", CurrentItemType, typeof(Item), false);
+            CurrentItemType = (Item)EditorGUILayout.ObjectField("Item Type", CurrentItemType, typeof(Item), false);
 
-        ListItems();
-
+            ListItems();
         
-        AddItems();
-        
+            AddItems();
 
-        inventoryButtons();
+            inventoryButtons();
 
-    }
+        }
 
     void ListItems()
     {
@@ -52,23 +50,23 @@ public class InventoryDebugEditor : EditorWindow
         }
 
         foreach(InstantiatedItem item in inventoryScript.InventoryList)
-        {
-            
+    {
+        
             GUILayout.Space(spacingSize);
             EditorGUILayout.BeginHorizontal();
             if(item.itemType == null)
             {
-                EditorGUILayout.LabelField("Null item");
+            EditorGUILayout.LabelField("Null item");
             }
             else
             {
-                EditorGUILayout.LabelField("Item:  " + item.itemType.ItemName); // displays enemy name
-                EditorGUILayout.LabelField("Count:  " + item.currentStackSize);  // displays kill count
-                if (GUILayout.Button("Select item"))
-                {
-                    instantiatedItem = item;
-                    CurrentItemType = item.itemType;
-                }
+            EditorGUILayout.LabelField("Item:  " + item.itemType.ItemName); // displays enemy name
+            EditorGUILayout.LabelField("Count:  " + item.currentStackSize);  // displays kill count
+            if (GUILayout.Button("Select item"))
+            {
+                instantiatedItem = item;
+                CurrentItemType = item.itemType;
+            }
             }
 
             EditorGUILayout.EndHorizontal();
@@ -82,11 +80,11 @@ public class InventoryDebugEditor : EditorWindow
         if (GUILayout.Button("Add Items") && CurrentItemType != null)
         {
             InstantiatedItem newItem = new InstantiatedItem(CurrentItemType, itemcount);
-            int returnVal = inventoryScript.AddItemToInventory(newItem);
+        int returnVal = inventoryScript.AddItemToInventory(newItem);
             if(returnVal > 0)
             {
-                Debug.Log( returnVal + " items have not been added");
-            }
+            Debug.Log( returnVal + " items have not been added");
+        }
             else
             {
                 Debug.Log(" all items were added");
@@ -99,13 +97,13 @@ public class InventoryDebugEditor : EditorWindow
             {
                 Debug.Log("all items successfully removed from inventory");
             }
-            else
-            {
+        else
+        {
                 Debug.Log("Insufficient items to remove from inventory");
             }
         }
-
     }
+
     void inventoryButtons()
     {
         if (GUILayout.Button("Update Dictionary"))

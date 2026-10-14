@@ -11,9 +11,10 @@ public class InventoryManager : MonoBehaviour
     private int inventorySize = 10;
     [SerializeField] public List<InstantiatedItem> InventoryList = new List<InstantiatedItem>();
 
-    private List<InstantiatedItem> HotInventoryList = new List<InstantiatedItem>();
-    //private int hotListsize = 3;
-    //private int itemIndex = 0;
+    [SerializeField] public List<InstantiatedItem> HotInventoryList = new List<InstantiatedItem>();
+    private int hotListsize = 3;
+    private int itemIndex = 0;
+    public InstantiatedItem helditem;
 
     private void Awake()
     {
@@ -204,7 +205,7 @@ public class InventoryManager : MonoBehaviour
             Debug.Log("Not enough items in stacks have been found");
             return false;
         }
-        
+
         if(item.currentStackSize == removeAmount)   // checks if it will remove all items from stack
         {
             item.itemType = null;
@@ -234,8 +235,5 @@ public class InventoryManager : MonoBehaviour
         }
 
     }
-
-    
-
 
 }
