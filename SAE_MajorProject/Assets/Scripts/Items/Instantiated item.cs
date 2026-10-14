@@ -15,7 +15,14 @@ public class InstantiatedItem
 
     public InstantiatedItem(Item item)
     {
+        itemType = item;
         currentStackSize = 1;
+    }
+
+    public InstantiatedItem()
+    {
+        itemType = null;
+        currentStackSize = 0;
     }
 
     

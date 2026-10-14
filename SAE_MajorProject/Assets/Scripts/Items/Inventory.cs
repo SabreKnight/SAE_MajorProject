@@ -161,10 +161,81 @@ public class InventoryManager : MonoBehaviour
         return 0;
     }
 
-    private void NewInventorySlot()
+    public bool RemoveItemFromInventory(InstantiatedItem item, int removeAmount)
+    {  
+        int tempSize = item.currentStackSize; // gets the current amount of items in the stack   
+        
+        if(tempSize < removeAmount) // checks if there is enough to remove in just the single stack
+        {
+            removeAmount -= item.currentStackSize;   // removes items from the total amount
+
+            UpdateLookup();
+            // creates an array to hold the references to the instance items that must be fully removed from inventory
+            InstantiatedItem[] cullList = new InstantiatedItem[InventoryLookup[item.itemType].Length];
+            int cullcount = 1;  // index for where to put next culled item
+            cullList[0] = item; // adds reference for base instance item to cull list
+
+            foreach(int index in InventoryLookup[item.itemType])    // checks for other objects of the same type in the inventory
+            {
+                InstantiatedItem invItem = InventoryList[index];    // gets the reference to the item
+                if(invItem == item) // checks if the chosen index is referencing the original one, and avoids duplicate references
+                {
+                    continue;
+                }
+
+                tempSize += invItem.currentStackSize;   // adds the new items stack size to the current pool to be removed from
+                
+                if(tempSize < removeAmount) // checks if another stack is needed to remove items from
+                {
+                    cullList[cullcount] = InventoryList[index];   // adds object to the list to be removed
+                    cullcount ++;   // increases index for next culled item
+                    removeAmount -= invItem.currentStackSize;   // removes items from the total amount
+                    continue;   
+                }
+                else    // enough stacks item amount's have been found to fully remove items
+                {
+                    invItem.currentStackSize -= removeAmount;   
+                    DeleteItem(cullList);
+                    return true;
+                }
+
+            }
+
+            Debug.Log("Not enough items in stacks have been found");
+            return false;
+        }
+        
+        if(item.currentStackSize == removeAmount)   // checks if it will remove all items from stack
+        {
+            item.itemType = null;
+            item.currentStackSize = 0;
+        }
+        else
+        {
+            item.currentStackSize -= removeAmount;
+        }
+
+        Debug.Log("Enough items in single stack");
+        return true;
+
+    }  
+
+    private void DeleteItem(InstantiatedItem[] items)
     {
+        foreach(InstantiatedItem item in items)
+        {
+            if(item == null)
+            {
+                continue;
+            }
+
+            item.itemType = null;
+            item.currentStackSize = 0;
+        }
 
     }
+
+    
 
 
 }

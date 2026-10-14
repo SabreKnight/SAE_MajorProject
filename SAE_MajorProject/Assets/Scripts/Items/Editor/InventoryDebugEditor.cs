@@ -8,6 +8,7 @@ public class InventoryDebugEditor : EditorWindow
 
     private static InventoryManager inventoryScript;
     private static Item CurrentItemType;
+    private static InstantiatedItem instantiatedItem;
     private static int itemcount; 
     private int spacingSize = 3;
 
@@ -35,10 +36,9 @@ public class InventoryDebugEditor : EditorWindow
 
         ListItems();
 
-        if(CurrentItemType != null)
-        {
-            AddItems();
-        }
+        
+        AddItems();
+        
 
         inventoryButtons();
 
@@ -64,7 +64,13 @@ public class InventoryDebugEditor : EditorWindow
             {
                 EditorGUILayout.LabelField("Item:  " + item.itemType.ItemName); // displays enemy name
                 EditorGUILayout.LabelField("Count:  " + item.currentStackSize);  // displays kill count
+                if (GUILayout.Button("Select item"))
+                {
+                    instantiatedItem = item;
+                    CurrentItemType = item.itemType;
+                }
             }
+
             EditorGUILayout.EndHorizontal();
         }
     }
@@ -72,8 +78,8 @@ public class InventoryDebugEditor : EditorWindow
     void AddItems()
     {
         GUILayout.Space(spacingSize);
-        itemcount = EditorGUILayout.IntField("Item amount to add", itemcount);
-        if (GUILayout.Button("Add Items"))
+        itemcount = EditorGUILayout.IntField("Item amount to add / remove", itemcount);
+        if (GUILayout.Button("Add Items") && CurrentItemType != null)
         {
             InstantiatedItem newItem = new InstantiatedItem(CurrentItemType, itemcount);
             int returnVal = inventoryScript.AddItemToInventory(newItem);
@@ -84,6 +90,18 @@ public class InventoryDebugEditor : EditorWindow
             else
             {
                 Debug.Log(" all items were added");
+            }
+        }
+
+        if (GUILayout.Button("Remove Items") && instantiatedItem.itemType != null)
+        {
+            if(inventoryScript.RemoveItemFromInventory(instantiatedItem, itemcount) == true)
+            {
+                Debug.Log("all items successfully removed from inventory");
+            }
+            else
+            {
+                Debug.Log("Insufficient items to remove from inventory");
             }
         }
 
