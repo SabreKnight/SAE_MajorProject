@@ -6,6 +6,7 @@ public class InputManager_Cont : MonoBehaviour
 {
     public InputActionAsset InputAction;
     public InteractionManager interactionScript;
+    public UIManager UIManagerScript;
 
 # region Movement Inputs
     private InputAction moveAction;
@@ -28,6 +29,9 @@ public class InputManager_Cont : MonoBehaviour
 
     private InputAction InteractAction; // interact input action (E Key)
     private InputAction EscapeAction;   // Escape Input action (ESC Key)
+    private InputAction InventoryAction;
+
+    private bool UIOverride = false;
 
 # endregion
 
@@ -55,6 +59,8 @@ public class InputManager_Cont : MonoBehaviour
         EscapeAction = InputSystem.actions.FindAction("Escape");
         lookAction = InputSystem.actions.FindAction("Look Direction");
         MousePositionAction = InputSystem.actions.FindAction("Mouse Position");
+        InventoryAction = InputSystem.actions.FindAction("Inventory");
+
     }
 
     private void Update()
@@ -90,6 +96,11 @@ public class InputManager_Cont : MonoBehaviour
         if(EscapeAction.WasPressedThisFrame())  // checks if Escape has been selected (ESC Key)
         {
             Debug.Log("Player clicked Escape to escape");
+        }
+
+        if(InventoryAction.WasPressedThisFrame())
+        {
+            UIOverride = UIManagerScript.InventoryinputButton();
         }
     }
 
@@ -151,7 +162,7 @@ public class InputManager_Cont : MonoBehaviour
 
         if(leftMouse.WasPressedThisFrame())
         {
-            interactionScript.useleftClickTool();
+            interactionScript.LeftClick();
            // Debug.Log("Left Mouse was pressed this frame");
         }
 

@@ -12,19 +12,36 @@ public class InteractionManager : MonoBehaviour    // attach to player object
 
     private Vector3 markerOffset = new Vector3(0.5f, 0.5f, 0);
 
-    public void useleftClickTool()
+    public void LeftClick()
     {
-        Debug.Log("Player attempted to use a tool");
+        switch(inventory.helditem.itemType.type)
+        {
+            case UseType.Tool:
+            {
+                Debug.Log("Player attempted to use a tool");
+                ToolLeftClick();
+                return;
+            }
+            default:
+            {
+                Debug.Log("No specified item has been selected");
+                return;
+            }
+        }
+    }
+
+    private void ToolLeftClick()
+    {
+        
         hitMarkerCollider = Physics2D.OverlapBoxAll(hitMarker.gameObject.transform.position, Vector2.one, 0f);
 
         foreach(Collider2D coll in hitMarkerCollider)
         {
-            if(coll != null)
+            if(coll != null && coll.gameObject != this.gameObject)
             {
                 Debug.Log(" hit collider has detected; " + coll);
             }
         }
-
     }
     
 

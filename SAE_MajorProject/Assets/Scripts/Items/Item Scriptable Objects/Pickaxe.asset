@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemName: Pickaxe
   type: 1
-  InventorySprite: {fileID: 7452904965680623327, guid: ad6ca260061579040b6981f6e202e3ca, type: 3}
+  inventorySprite: {fileID: 7452904965680623327, guid: ad6ca260061579040b6981f6e202e3ca, type: 3}
   stackSizeLimit: 1

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Wood
   m_EditorClassIdentifier: 
   ItemName: Wood
-  InventorySprite: {fileID: -7880233516337133505, guid: ad6ca260061579040b6981f6e202e3ca, type: 3}
+  type: 0
+  inventorySprite: {fileID: -7880233516337133505, guid: ad6ca260061579040b6981f6e202e3ca, type: 3}
   stackSizeLimit: 50
-  CurrentStackSize: 0

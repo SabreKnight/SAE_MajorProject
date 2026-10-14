@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Stone
   m_EditorClassIdentifier: 
   ItemName: Stone
-  InventorySprite: {fileID: -8114254038708387531, guid: ad6ca260061579040b6981f6e202e3ca, type: 3}
+  type: 0
+  inventorySprite: {fileID: -8114254038708387531, guid: ad6ca260061579040b6981f6e202e3ca, type: 3}
   stackSizeLimit: 50

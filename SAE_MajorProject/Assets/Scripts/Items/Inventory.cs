@@ -8,7 +8,7 @@ public class InventoryManager : MonoBehaviour
     private Dictionary<Item, int[]> InventoryLookup = new Dictionary<Item, int[]>();
 
     //list of items that make up the inventory
-    private int inventorySize = 10;
+    [HideInInspector] public int inventorySize = 10;
     [SerializeField] public List<InstantiatedItem> InventoryList = new List<InstantiatedItem>();
 
     [SerializeField] public List<InstantiatedItem> HotInventoryList = new List<InstantiatedItem>();
