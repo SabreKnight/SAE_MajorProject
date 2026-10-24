@@ -9,9 +9,8 @@ public class InventoryManager : MonoBehaviour
 
     //list of items that make up the inventory
     [HideInInspector] public int inventorySize = 10;
-    [SerializeField] public List<InstantiatedItem> InventoryList = new List<InstantiatedItem>();
-
-    [SerializeField] public List<InstantiatedItem> HotInventoryList = new List<InstantiatedItem>();
+    public List<InstantiatedItem> InventoryList = new List<InstantiatedItem>();
+    public List<InstantiatedItem> HotInventoryList = new List<InstantiatedItem>();
     private int hotListsize = 3;
     private int itemIndex = 0;
     public InstantiatedItem helditem;
@@ -234,6 +233,40 @@ public class InventoryManager : MonoBehaviour
             item.currentStackSize = 0;
         }
 
+    }
+
+    public void SwapItems(int firstIndex, int secondIndex)  // swaps the location of 2 different stacks in the inventory
+    {
+        InstantiatedItem tempItem = InventoryList[firstIndex];
+        InventoryList[firstIndex] = InventoryList[secondIndex];
+        InventoryList[secondIndex] = tempItem;
+
+        UpdateLookup();
+        GameManager.Instance.UIManagerSingleton.UpdatePanels();
+    }
+
+    public void CombineStacks(int dragStackIndex, int targetStackIndex)
+    {
+        InstantiatedItem dragItem = InventoryList[dragStackIndex];
+        InstantiatedItem targetItem = InventoryList[targetStackIndex];
+
+        int totalsize = dragItem.currentStackSize + targetItem.currentStackSize;
+
+        if(totalsize > targetItem.itemType.stackSizeLimit)  // checks if items overflow
+        {
+            dragItem.currentStackSize = totalsize - targetItem.itemType.stackSizeLimit; // gives remainder to original stack
+            targetItem.currentStackSize = targetItem.itemType.stackSizeLimit;   // fills the target stack
+        }
+        else
+        {
+            targetItem.currentStackSize = totalsize;
+            
+            dragItem.itemType = null;
+            dragItem.currentStackSize = 0;
+        }
+
+        UpdateLookup();
+        GameManager.Instance.UIManagerSingleton.UpdatePanels();
     }
 
 }

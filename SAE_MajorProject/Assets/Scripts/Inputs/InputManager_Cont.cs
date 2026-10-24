@@ -6,7 +6,8 @@ public class InputManager_Cont : MonoBehaviour
 {
     public InputActionAsset InputAction;
     public InteractionManager interactionScript;
-    public UIManager UIManagerScript;
+    private UIManager UIManagerScript;
+    private bool UIOverride = false;
 
 # region Movement Inputs
     private InputAction moveAction;
@@ -31,8 +32,6 @@ public class InputManager_Cont : MonoBehaviour
     private InputAction EscapeAction;   // Escape Input action (ESC Key)
     private InputAction InventoryAction;
 
-    private bool UIOverride = false;
-
 # endregion
 
 # region PointingDirection
@@ -46,6 +45,13 @@ public class InputManager_Cont : MonoBehaviour
 
 # endregion
     
+    void Awake()
+    {
+        if(UIManagerScript == null)
+        {
+            UIManagerScript = GameManager.Instance.UIManagerSingleton;
+        }
+    }
     void OnEnable() // when the input script is enabled
     {
         //InputAction.FindActionMap("Player");
@@ -61,14 +67,26 @@ public class InputManager_Cont : MonoBehaviour
         MousePositionAction = InputSystem.actions.FindAction("Mouse Position");
         InventoryAction = InputSystem.actions.FindAction("Inventory");
 
+        SetupPanels();
+    }
+
+    void SetupPanels()
+    {
+        UIManagerScript.SetUpPanel();
+        UIOverride = false;
     }
 
     private void Update()
     {
-        CheckMisc();
-        CheckLeftMouseInput();
-        CheckRightMouseInput();
-        UpdateModel();
+        InventoryToggle();
+
+        if(UIOverride == false) // inputs will be undetected if Override is active
+        {
+            CheckMisc();
+            CheckLeftMouseInput();
+            CheckRightMouseInput();
+            UpdateModel();
+        }
     }
 
     private void FixedUpdate()
@@ -81,7 +99,14 @@ public class InputManager_Cont : MonoBehaviour
         interactionScript.MoveHitmarker(TrueLookdirection);
     }
     
+    private void InventoryToggle()
+    {
+        if(InventoryAction.WasPressedThisFrame())
+        {
+            UIOverride = UIManagerScript.InventoryinputButton();
+        }
 
+    }
     private void CheckMisc()    // checks any miscellanious inputs short enough for just 1 functions
     {
         //Checks Movement values
@@ -96,11 +121,6 @@ public class InputManager_Cont : MonoBehaviour
         if(EscapeAction.WasPressedThisFrame())  // checks if Escape has been selected (ESC Key)
         {
             Debug.Log("Player clicked Escape to escape");
-        }
-
-        if(InventoryAction.WasPressedThisFrame())
-        {
-            UIOverride = UIManagerScript.InventoryinputButton();
         }
     }
 

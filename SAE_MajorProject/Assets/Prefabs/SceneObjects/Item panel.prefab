@@ -562,6 +562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8245bfaff97cd140b71f89b926242bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventoryIndexInt: 0
   instantiatedItem:
     itemType: {fileID: 0}
     currentStackSize: 0

@@ -6,7 +6,8 @@ using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private InventoryManager inventory;
+
+    public InventoryManager inventory;
     [SerializeField] private GameObject InventoryPanelObject;
 
     [SerializeField] private List<UI_itemPanel> UI_InventoryPanels;
@@ -14,10 +15,16 @@ public class UIManager : MonoBehaviour
 
     private bool OpenInventoryBool = true;
 
-    void Start()
+
+    public void SetUpPanel()
     {
         OpenInventoryBool = false;
         InventoryPanelObject.SetActive(false);
+
+        for(int i = 0; i < UI_InventoryPanels.Count; i++)
+        {
+            UI_InventoryPanels[i].inventoryIndexInt = i;
+        }
     }
 
     public bool InventoryinputButton()
@@ -42,7 +49,11 @@ public class UIManager : MonoBehaviour
     {
         InventoryPanelObject.SetActive(true);
         inventory.UpdateLookup();
+        UpdatePanels();
+    }
 
+    public void UpdatePanels()
+    {
         for(int i = 0 ; i < UI_InventoryPanels.Count; i++)
         {
             if(inventory.InventoryList[i].itemType != null)
@@ -55,5 +66,7 @@ public class UIManager : MonoBehaviour
             }
         }
     }
+
+
 
 }
