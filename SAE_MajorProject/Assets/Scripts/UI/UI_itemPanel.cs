@@ -11,6 +11,7 @@ IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHan
 
 #region References
 
+    [SerializeField] private PanelType panelType = PanelType.OwnedPanel;
     public int inventoryIndexInt;
     private UIManager UIManagerReference;
     private GameObject tempDragObject;
@@ -20,9 +21,10 @@ IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHan
     public Image iconimage;
     public Image outlinePanel;
     private bool SelectedBool;
+    
 
 #endregion
-
+#region Updating
     void OnEnable()
     {
         if(UIManagerReference == null)
@@ -33,6 +35,7 @@ IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHan
 
     public void UpdatePanel(InstantiatedItem item)
     {
+        Debug.Log("item panel: " + inventoryIndexInt + " has been updated of type: " + panelType);
         instantiatedItem = item;
         StackSizeText.text = instantiatedItem.currentStackSize.ToString();
         iconimage.sprite = instantiatedItem.itemType.inventorySprite;
@@ -41,7 +44,8 @@ IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHan
 
     public void EmptyPanel()
     {
-        instantiatedItem = null;
+        Debug.Log("item panel: " + inventoryIndexInt + " has been NOT updated of type: " + panelType);
+        instantiatedItem = new InstantiatedItem(instantiatedItem.HotInventoryIndex);
         StackSizeText.text = "";
         iconimage.sprite = null;
 
@@ -70,10 +74,16 @@ IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHan
         }
     }   
 
+#endregion
 #region Dragging
 
     public void OnBeginDrag(PointerEventData eventData) // this begins the UI dragging data
     {
+        if(panelType != PanelType.OwnedPanel)
+        {
+            Debug.Log("not a dragable panel");
+        }
+
         tempDragObject = new GameObject("Dragged_UI_Object");   // creates a temporary UI object to be dragged
         if(instantiatedItem.itemType != null)   // checks if there is an object type
         {
@@ -86,12 +96,21 @@ IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHan
     }
     public void OnDrag(PointerEventData eventData)   // this is the active dragging data
     {
+        if(tempDragObject == null)
+        {
+            return;
+        }
         Debug.Log("Dragging " + eventData.pointerDrag);
         tempDragObject.transform.position = Input.mousePosition;    // temp UI object follows mouse position
     }
     public void OnEndDrag(PointerEventData eventData)   // this is the end of dragging data
     {
-        DestroyImmediate(tempDragObject);   // destroys the temp UI object
+        if(tempDragObject != null)
+        {
+            DestroyImmediate(tempDragObject);   // destroys the temp UI object
+        }
+
+        tempDragObject = null;
         //Debug.Log("End drag");  
     }
     public void OnDrop(PointerEventData eventData)  // when an object has been dropped ontop of it
@@ -102,17 +121,62 @@ IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHan
             return;
         }
 
-        Debug.Log(eventData.pointerDrag + " Has been dropped ontop of " + this.gameObject);
-        UI_itemPanel droppedItemPanel = eventData.pointerDrag.GetComponent<UI_itemPanel>(); // gets reference to object being dropped
-
-        if(instantiatedItem == null || droppedItemPanel.instantiatedItem.itemType != instantiatedItem.itemType) // items are not the same
+        if(eventData.pointerDrag.GetComponent<UI_itemPanel>().panelType != PanelType.OwnedPanel)
         {
-            UIManagerReference.inventory.SwapItems(droppedItemPanel.inventoryIndexInt, inventoryIndexInt);
+            Debug.Log("Attempting to move object from panel that does not hold a moveable item");
             return;
         }
-        else // items are the same and attempts to merge the two
+
+        UI_itemPanel droppedItemPanel = eventData.pointerDrag.GetComponent<UI_itemPanel>(); // gets reference to object being dropped
+
+        switch(panelType)
         {
-            UIManagerReference.inventory.CombineStacks(droppedItemPanel.inventoryIndexInt, inventoryIndexInt);
+            case PanelType.OwnedPanel:
+            {
+                Debug.Log(eventData.pointerDrag + " Has been dropped ontop of " + this.gameObject + " in the inventory");
+
+                if(instantiatedItem == null || droppedItemPanel.instantiatedItem.itemType != instantiatedItem.itemType) // items are not the same
+                {
+                    UIManagerReference.inventory.SwapItems(droppedItemPanel.inventoryIndexInt, inventoryIndexInt);
+                }
+                else // items are the same and attempts to merge the two
+                {
+                    UIManagerReference.inventory.CombineStacks(droppedItemPanel.inventoryIndexInt, inventoryIndexInt);
+                    if(droppedItemPanel.BoolgetSet == true)
+                    {
+                        //UIManagerReference.inventory.SetHotItem(droppedItemPanel.inventoryIndexInt, instantiatedItem.HotInventoryIndex);
+                    }
+                }
+                break;
+            }
+            case PanelType.HotPanel:
+            {
+                Debug.Log("Dragging onto a hot-panel in the inventory");
+
+                if(droppedItemPanel.instantiatedItem.itemType != null)
+                {
+                    if (instantiatedItem == null)
+                    {
+                        Debug.LogError("instantiated item reference on hot panel:");
+                        instantiatedItem = UIManagerReference.FindHotPanelItem(this);
+                    }
+
+                    droppedItemPanel.instantiatedItem.HotInventoryIndex = instantiatedItem.HotInventoryIndex;   // tells the dropped item which hot panel it is
+                    UIManagerReference.UI_InventoryPanels[inventoryIndexInt].BoolgetSet = false; // deactivates selection on old item
+                    droppedItemPanel.BoolgetSet = true; // activates the new panel
+                    instantiatedItem = droppedItemPanel.instantiatedItem;   // sets item in hotpanel
+                    inventoryIndexInt = droppedItemPanel.inventoryIndexInt;
+                    UIManagerReference.inventory.SetHotItem(droppedItemPanel.inventoryIndexInt, instantiatedItem.HotInventoryIndex);
+                    UpdatePanel(instantiatedItem);
+                }
+
+                break;
+            }
+            case PanelType.GamePanel:
+            {
+                Debug.Log("attempting to drag onto a game panel, which is invalid");
+                break;
+            }
         }
         
     }
@@ -124,3 +188,10 @@ IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHan
         Debug.Log("Clicked UI interface");
     }
 }
+
+public enum PanelType
+{
+    OwnedPanel = 0,
+    HotPanel = 1,
+    GamePanel = 2
+};

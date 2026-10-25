@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using System.Data.Common;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -12,14 +13,16 @@ public class InventoryManager : MonoBehaviour
     public List<InstantiatedItem> InventoryList = new List<InstantiatedItem>();
     public List<InstantiatedItem> HotInventoryList = new List<InstantiatedItem>();
     private int hotListsize = 3;
-    private int itemIndex = 0;
+    public int itemIndexOffset = 0;
     public InstantiatedItem helditem;
 
     private void Awake()
     {
         //UpdateInventorySize();
+        //UpdatingHotlist();
     }
 
+    #region Updating
     public void UpdateInventorySize()
     {
         if(InventoryList.Count < inventorySize)
@@ -37,12 +40,34 @@ public class InventoryManager : MonoBehaviour
                 
             }
 
-             Debug.Log("max items have been added to the inventory without reaching max value");
+            Debug.Log("max items have been added to the inventory without reaching max value");
+        }
+    }
+    
+    private void UpdatingHotlist()
+    {
+        if(HotInventoryList.Count < hotListsize)
+        {
+            for(int I = 0 ; I < hotListsize; I++) // goes through each item slot in the inventory
+            {
+                HotInventoryList.Add(null);
+                Debug.Log("Hot Inventory size has been updated to: " + HotInventoryList.Count);
+
+                if(HotInventoryList.Count == hotListsize)
+                {
+                    Debug.Log("Hot Inventory has reach max size of: " + HotInventoryList.Count + " which should be equal to: " + hotListsize );
+                    return;
+                }
+                
+            }
+
+            Debug.Log("max items have been added to the inventory without reaching max value");
         }
     }
 
     public void UpdateLookup()
     {
+        //UpdateHotPanels();
         InventoryLookup.Clear();
         for(int I = 0 ; I < InventoryList.Count; I++) // goes through each item slot in the inventory
         {
@@ -96,7 +121,20 @@ public class InventoryManager : MonoBehaviour
 
             Debug.Log(text);
         }
+
+        
     }
+
+    public void UpdateHotPanels()
+    {
+        for (int i = 0; i < HotInventoryList.Count; i++)
+        {
+            HotInventoryList[i] = new InstantiatedItem(i);
+        }
+    }
+
+    #endregion
+    #region Manipulate
 
     // attempts to add an item to a stack, or create a new stack in inventory. returns how many DID NOT enter the inventory
     public int AddItemToInventory(InstantiatedItem newItem) 
@@ -220,7 +258,7 @@ public class InventoryManager : MonoBehaviour
 
     }  
 
-    private void DeleteItem(InstantiatedItem[] items)
+    private void DeleteItem(InstantiatedItem[] items)   // deletes a collection of stacks
     {
         foreach(InstantiatedItem item in items)
         {
@@ -242,10 +280,10 @@ public class InventoryManager : MonoBehaviour
         InventoryList[secondIndex] = tempItem;
 
         UpdateLookup();
-        GameManager.Instance.UIManagerSingleton.UpdatePanels();
+        GameManager.Instance.UIManagerSingleton.SwapSelected(firstIndex, secondIndex);
     }
 
-    public void CombineStacks(int dragStackIndex, int targetStackIndex)
+    public void CombineStacks(int dragStackIndex, int targetStackIndex) // combines the stacks of 2 items of the same type into 1 stack
     {
         InstantiatedItem dragItem = InventoryList[dragStackIndex];
         InstantiatedItem targetItem = InventoryList[targetStackIndex];
@@ -268,5 +306,17 @@ public class InventoryManager : MonoBehaviour
         UpdateLookup();
         GameManager.Instance.UIManagerSingleton.UpdatePanels();
     }
+
+    #endregion
+    #region HotItems
+
+    public void SetHotItem(int InventoryIndex, int HotIndex)
+    {
+        HotInventoryList[HotIndex] = InventoryList[InventoryIndex];
+        UpdateLookup();
+        GameManager.Instance.UIManagerSingleton.UpdatePanels();
+    }
+
+    #endregion
 
 }

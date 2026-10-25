@@ -10,12 +10,16 @@ public class UIManager : MonoBehaviour
     public InventoryManager inventory;
     [SerializeField] private GameObject InventoryPanelObject;
 
-    [SerializeField] private List<UI_itemPanel> UI_InventoryPanels;
+    [SerializeField] public List<UI_itemPanel> UI_InventoryPanels;
     [SerializeField] private List<UI_itemPanel> UI_HotInventoryPanels;
+    [SerializeField] private List<UI_itemPanel> UI_GameInventoryPanels;
 
     private bool OpenInventoryBool = true;
 
-
+    public void Awake()
+    {
+        SetUpPanel();
+    }
     public void SetUpPanel()
     {
         OpenInventoryBool = false;
@@ -24,6 +28,10 @@ public class UIManager : MonoBehaviour
         for(int i = 0; i < UI_InventoryPanels.Count; i++)
         {
             UI_InventoryPanels[i].inventoryIndexInt = i;
+        }
+        for (int i = 0; i < UI_HotInventoryPanels.Count; i++)
+        {
+            UI_HotInventoryPanels[i].instantiatedItem = new InstantiatedItem(i);
         }
     }
 
@@ -49,7 +57,21 @@ public class UIManager : MonoBehaviour
     {
         InventoryPanelObject.SetActive(true);
         inventory.UpdateLookup();
+        //inventory.UpdateHotPanels();
         UpdatePanels();
+    }
+
+    public InstantiatedItem FindHotPanelItem(UI_itemPanel panelref)
+    {
+        for (int i = 0; i < UI_HotInventoryPanels.Count; i++)
+        {
+            if(UI_HotInventoryPanels[i] == panelref)
+            {
+                return inventory.HotInventoryList[i];
+            }
+        }
+
+        return null;
     }
 
     public void UpdatePanels()
@@ -65,6 +87,47 @@ public class UIManager : MonoBehaviour
                 UI_InventoryPanels[i].EmptyPanel();
             }
         }
+
+        for(int i = 0 ; i < UI_HotInventoryPanels.Count; i++)
+        {
+            if(inventory.HotInventoryList[i].itemType != null)
+            {
+                UI_HotInventoryPanels[i].UpdatePanel(inventory.HotInventoryList[i]);
+                int HotOffset = i + inventory.itemIndexOffset;
+
+                if(HotOffset > UI_GameInventoryPanels.Count)    // wraps the value so it doesn't go outside list index range
+                {
+                    HotOffset -= UI_GameInventoryPanels.Count;
+                }
+                if(HotOffset < 0)
+                {
+                    HotOffset += UI_GameInventoryPanels.Count;
+                }
+
+                //UI_GameInventoryPanels[HotOffset].UpdatePanel(inventory.HotInventoryList[i]);   // updates game UI to match hot panels
+            }
+            else
+            {
+                UI_HotInventoryPanels[i].EmptyPanel();
+            }
+        }
+    }
+
+    public void SwapSelected(int firstIndex, int secondIndex)
+    {
+        bool firstSelected = UI_InventoryPanels[firstIndex].BoolgetSet;
+        bool secondSelected = UI_InventoryPanels[secondIndex].BoolgetSet;
+
+        UI_InventoryPanels[firstIndex].BoolgetSet = secondSelected;
+        UI_InventoryPanels[secondIndex].BoolgetSet = firstSelected;
+
+        UpdatePanels();
+    }
+
+    
+    public void ScrollHotInventory()
+    {
+        
     }
 
 

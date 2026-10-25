@@ -79,8 +79,8 @@ public class InventoryDebugEditor : EditorWindow
         itemcount = EditorGUILayout.IntField("Item amount to add / remove", itemcount);
         if (GUILayout.Button("Add Items") && CurrentItemType != null)
         {
-            InstantiatedItem newItem = new InstantiatedItem(CurrentItemType, itemcount);
-        int returnVal = inventoryScript.AddItemToInventory(newItem);
+            InstantiatedItem newItem = new InstantiatedItem(CurrentItemType, itemcount, 0);
+            int returnVal = inventoryScript.AddItemToInventory(newItem);
             if(returnVal > 0)
             {
             Debug.Log( returnVal + " items have not been added");

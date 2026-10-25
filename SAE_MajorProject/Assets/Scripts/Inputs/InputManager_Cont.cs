@@ -6,7 +6,7 @@ public class InputManager_Cont : MonoBehaviour
 {
     public InputActionAsset InputAction;
     public InteractionManager interactionScript;
-    private UIManager UIManagerScript;
+    [SerializeField] private UIManager UIManagerScript;
     private bool UIOverride = false;
 
 # region Movement Inputs
@@ -45,7 +45,7 @@ public class InputManager_Cont : MonoBehaviour
 
 # endregion
     
-    void Awake()
+    void Start()
     {
         if(UIManagerScript == null)
         {
@@ -54,6 +54,7 @@ public class InputManager_Cont : MonoBehaviour
     }
     void OnEnable() // when the input script is enabled
     {
+        
         //InputAction.FindActionMap("Player");
 
         //this gets a reference to each of the actions in the player input map
