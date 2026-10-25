@@ -20,7 +20,7 @@ IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHan
     [SerializeField] private TextMeshProUGUI HotkeyStackSize; 
     public Image iconimage;
     public Image outlinePanel;
-    private bool SelectedBool;
+    [SerializeField] private bool SelectedBool;
     
 
 #endregion
@@ -138,13 +138,20 @@ IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHan
                 if(instantiatedItem == null || droppedItemPanel.instantiatedItem.itemType != instantiatedItem.itemType) // items are not the same
                 {
                     UIManagerReference.inventory.SwapItems(droppedItemPanel.inventoryIndexInt, inventoryIndexInt);
+                    bool tempBool = BoolgetSet;
+                    BoolgetSet = droppedItemPanel.BoolgetSet;
+                    droppedItemPanel.BoolgetSet = tempBool;
                 }
+                
                 else // items are the same and attempts to merge the two
                 {
                     UIManagerReference.inventory.CombineStacks(droppedItemPanel.inventoryIndexInt, inventoryIndexInt);
+                    
                     if(droppedItemPanel.BoolgetSet == true)
                     {
-                        //UIManagerReference.inventory.SetHotItem(droppedItemPanel.inventoryIndexInt, instantiatedItem.HotInventoryIndex);
+                        UIManagerReference.inventory.SetHotItem(droppedItemPanel.inventoryIndexInt, instantiatedItem.HotInventoryIndex);
+                        droppedItemPanel.BoolgetSet = false;
+                        BoolgetSet = true; 
                     }
                 }
                 break;

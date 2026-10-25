@@ -18,8 +18,7 @@ public class InventoryManager : MonoBehaviour
 
     private void Awake()
     {
-        //UpdateInventorySize();
-        //UpdatingHotlist();
+        UpdateLookup();
     }
 
     #region Updating
@@ -121,8 +120,6 @@ public class InventoryManager : MonoBehaviour
 
             Debug.Log(text);
         }
-
-        
     }
 
     public void UpdateHotPanels()
