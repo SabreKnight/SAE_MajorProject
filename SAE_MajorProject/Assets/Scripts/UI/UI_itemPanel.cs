@@ -40,6 +40,12 @@ IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHan
         StackSizeText.text = instantiatedItem.currentStackSize.ToString();
         iconimage.sprite = instantiatedItem.itemType.inventorySprite;
         iconimage.color = Color.white;
+
+        if(panelType == PanelType.OwnedPanel)
+        {
+            BoolgetSet = instantiatedItem.selectedItemBool;
+        }
+        
     }
 
     public void EmptyPanel()
@@ -50,6 +56,11 @@ IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHan
         iconimage.sprite = null;
 
         iconimage.color = Color.clear;
+        if(panelType != PanelType.GamePanel)
+        {
+            BoolgetSet = false;
+        }
+        
     }
     
     // need to create delegates and the like to notify UI manager of panel selection.
@@ -66,6 +77,7 @@ IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHan
             if(value)
             {
                 outlinePanel.color = Color.red;
+                UIManagerReference.UI_HotInventoryPanels[instantiatedItem.HotInventoryIndex].instantiatedItem = instantiatedItem;
             }
             else
             {
@@ -138,22 +150,18 @@ IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHan
                 if(instantiatedItem == null || droppedItemPanel.instantiatedItem.itemType != instantiatedItem.itemType) // items are not the same
                 {
                     UIManagerReference.inventory.SwapItems(droppedItemPanel.inventoryIndexInt, inventoryIndexInt);
-                    bool tempBool = BoolgetSet;
-                    BoolgetSet = droppedItemPanel.BoolgetSet;
-                    droppedItemPanel.BoolgetSet = tempBool;
                 }
                 
                 else // items are the same and attempts to merge the two
                 {
                     UIManagerReference.inventory.CombineStacks(droppedItemPanel.inventoryIndexInt, inventoryIndexInt);
                     
-                    if(droppedItemPanel.BoolgetSet == true)
+                    if(droppedItemPanel.instantiatedItem.selectedItemBool == true)
                     {
                         UIManagerReference.inventory.SetHotItem(droppedItemPanel.inventoryIndexInt, instantiatedItem.HotInventoryIndex);
-                        droppedItemPanel.BoolgetSet = false;
-                        BoolgetSet = true; 
                     }
                 }
+
                 break;
             }
             case PanelType.HotPanel:
@@ -162,19 +170,7 @@ IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHan
 
                 if(droppedItemPanel.instantiatedItem.itemType != null)
                 {
-                    if (instantiatedItem == null)
-                    {
-                        Debug.LogError("instantiated item reference on hot panel:");
-                        instantiatedItem = UIManagerReference.FindHotPanelItem(this);
-                    }
-
-                    droppedItemPanel.instantiatedItem.HotInventoryIndex = instantiatedItem.HotInventoryIndex;   // tells the dropped item which hot panel it is
-                    UIManagerReference.UI_InventoryPanels[inventoryIndexInt].BoolgetSet = false; // deactivates selection on old item
-                    droppedItemPanel.BoolgetSet = true; // activates the new panel
-                    instantiatedItem = droppedItemPanel.instantiatedItem;   // sets item in hotpanel
-                    inventoryIndexInt = droppedItemPanel.inventoryIndexInt;
-                    UIManagerReference.inventory.SetHotItem(droppedItemPanel.inventoryIndexInt, instantiatedItem.HotInventoryIndex);
-                    UpdatePanel(instantiatedItem);
+                    SetHotitem(droppedItemPanel, this);
                 }
 
                 break;
@@ -186,6 +182,26 @@ IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHan
             }
         }
         
+    }
+
+    private void SetHotitem(UI_itemPanel droppedItemPanel, UI_itemPanel HotPanel)
+    {
+        if(droppedItemPanel.instantiatedItem.itemType != null)
+        {
+            if (HotPanel.instantiatedItem == null)
+            {
+                Debug.LogError("instantiated item reference on hot panel:");
+                HotPanel.instantiatedItem = UIManagerReference.FindHotPanelItem(this);
+            }
+
+            droppedItemPanel.instantiatedItem.HotInventoryIndex = HotPanel.instantiatedItem.HotInventoryIndex;   // tells the dropped item which hot panel it is
+            UIManagerReference.UI_InventoryPanels[inventoryIndexInt].instantiatedItem.selectedItemBool = false; // deactivates selection on old item
+            droppedItemPanel.instantiatedItem.selectedItemBool = true; // activates the new panel
+            HotPanel.instantiatedItem = droppedItemPanel.instantiatedItem;   // sets item in hotpanel
+            HotPanel.inventoryIndexInt = droppedItemPanel.inventoryIndexInt;
+            HotPanel.UIManagerReference.inventory.SetHotItem(droppedItemPanel.inventoryIndexInt, instantiatedItem.HotInventoryIndex);
+            UpdatePanel(instantiatedItem);
+        }
     }
 
 #endregion

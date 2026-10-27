@@ -399,6 +399,7 @@ MonoBehaviour:
   PlayerObject: {fileID: 1332454912}
   moveValue: {x: 0, y: 0}
   sprintSpeed: 2
+  scrollValue: 0
   Mouseposition: {x: 0, y: 0}
   MouseDirection: {x: 0, y: 0}
   TrueLookdirection: {x: 0, y: 0}
@@ -434,48 +435,62 @@ MonoBehaviour:
   - itemType: {fileID: 11400000, guid: 6505956543f65574e852894c8ce47e2d, type: 2}
     currentStackSize: 30
     HotInventoryIndex: 0
+    selectedItemBool: 0
   - itemType: {fileID: 0}
     currentStackSize: 0
     HotInventoryIndex: 0
+    selectedItemBool: 0
   - itemType: {fileID: 11400000, guid: 6505956543f65574e852894c8ce47e2d, type: 2}
     currentStackSize: 40
     HotInventoryIndex: 0
+    selectedItemBool: 0
   - itemType: {fileID: 11400000, guid: 6505956543f65574e852894c8ce47e2d, type: 2}
     currentStackSize: 20
     HotInventoryIndex: 0
+    selectedItemBool: 0
   - itemType: {fileID: 11400000, guid: af5c911f039b919468bc770c74a4ceb6, type: 2}
     currentStackSize: 50
     HotInventoryIndex: 0
+    selectedItemBool: 0
   - itemType: {fileID: 11400000, guid: af5c911f039b919468bc770c74a4ceb6, type: 2}
     currentStackSize: 45
     HotInventoryIndex: 0
+    selectedItemBool: 0
   - itemType: {fileID: 11400000, guid: 6505956543f65574e852894c8ce47e2d, type: 2}
     currentStackSize: 5
     HotInventoryIndex: 0
+    selectedItemBool: 0
   - itemType: {fileID: 11400000, guid: a9738a46f1b2e2a47b5b8a7dfeceee44, type: 2}
     currentStackSize: 1
     HotInventoryIndex: 0
+    selectedItemBool: 0
   - itemType: {fileID: 11400000, guid: a9738a46f1b2e2a47b5b8a7dfeceee44, type: 2}
     currentStackSize: 1
     HotInventoryIndex: 0
+    selectedItemBool: 0
   - itemType: {fileID: 0}
     currentStackSize: 0
     HotInventoryIndex: 0
+    selectedItemBool: 0
   HotInventoryList:
   - itemType: {fileID: 0}
     currentStackSize: 0
     HotInventoryIndex: 0
+    selectedItemBool: 0
   - itemType: {fileID: 0}
     currentStackSize: 0
     HotInventoryIndex: 1
+    selectedItemBool: 0
   - itemType: {fileID: 0}
     currentStackSize: 0
     HotInventoryIndex: 2
+    selectedItemBool: 0
   itemIndexOffset: 0
   helditem:
     itemType: {fileID: 11400000, guid: a9738a46f1b2e2a47b5b8a7dfeceee44, type: 2}
     currentStackSize: 1
     HotInventoryIndex: 0
+    selectedItemBool: 0
 --- !u!114 &175235203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -505,7 +520,10 @@ MonoBehaviour:
   - {fileID: 1417537767}
   - {fileID: 1934800119}
   - {fileID: 1710939098}
-  UI_GameInventoryPanels: []
+  UI_GameInventoryPanels:
+  - {fileID: 593313161}
+  - {fileID: 1382934360}
+  - {fileID: 1043909143}
 --- !u!1001 &226162254
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -919,6 +937,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 74725902874700322, guid: 07e364151d1272e49833bfc0ade14648, type: 3}
   m_PrefabInstance: {fileID: 918078516}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &593313161 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2008446915965524575, guid: 07e364151d1272e49833bfc0ade14648, type: 3}
+  m_PrefabInstance: {fileID: 918078516}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8245bfaff97cd140b71f89b926242bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &618857564
 GameObject:
   m_ObjectHideFlags: 0
@@ -1280,9 +1309,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 593313160}
   - {fileID: 492278492}
   - {fileID: 1043909142}
-  - {fileID: 593313160}
   - {fileID: 50751953}
   m_Father: {fileID: 1915268816}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1511,7 +1540,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7133530537893453868, guid: 07e364151d1272e49833bfc0ade14648, type: 3}
       propertyPath: m_Name
-      value: Item panel (3)
+      value: left item panel
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1790,6 +1819,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 74725902874700322, guid: 07e364151d1272e49833bfc0ade14648, type: 3}
   m_PrefabInstance: {fileID: 1231150686}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1043909143 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2008446915965524575, guid: 07e364151d1272e49833bfc0ade14648, type: 3}
+  m_PrefabInstance: {fileID: 1231150686}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8245bfaff97cd140b71f89b926242bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1107731798
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2317,7 +2357,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7133530537893453868, guid: 07e364151d1272e49833bfc0ade14648, type: 3}
       propertyPath: m_Name
-      value: Item panel (2)
+      value: top Item panel
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2613,6 +2653,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 74725902874700322, guid: 07e364151d1272e49833bfc0ade14648, type: 3}
   m_PrefabInstance: {fileID: 1335332522}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1382934360 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2008446915965524575, guid: 07e364151d1272e49833bfc0ade14648, type: 3}
+  m_PrefabInstance: {fileID: 8054947872999339414}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8245bfaff97cd140b71f89b926242bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1417537767 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2008446915965524575, guid: 07e364151d1272e49833bfc0ade14648, type: 3}
@@ -16884,9 +16935,21 @@ PrefabInstance:
       propertyPath: panelType
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4142805810001334808, guid: 07e364151d1272e49833bfc0ade14648, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142805810001334808, guid: 07e364151d1272e49833bfc0ade14648, type: 3}
+      propertyPath: m_Color.g
+      value: 0.9472795
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142805810001334808, guid: 07e364151d1272e49833bfc0ade14648, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7133530537893453868, guid: 07e364151d1272e49833bfc0ade14648, type: 3}
       propertyPath: m_Name
-      value: Item panel
+      value: mid Item panel
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

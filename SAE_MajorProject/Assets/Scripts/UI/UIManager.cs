@@ -11,7 +11,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject InventoryPanelObject;
 
     [SerializeField] public List<UI_itemPanel> UI_InventoryPanels;
-    [SerializeField] private List<UI_itemPanel> UI_HotInventoryPanels;
+    [SerializeField] public List<UI_itemPanel> UI_HotInventoryPanels;
     [SerializeField] private List<UI_itemPanel> UI_GameInventoryPanels;
 
     private bool OpenInventoryBool = true;
@@ -108,20 +108,20 @@ public class UIManager : MonoBehaviour
             if(inventory.HotInventoryList[i].itemType != null)
             {
                 UI_HotInventoryPanels[i].UpdatePanel(inventory.HotInventoryList[i]);
-                UI_GameInventoryPanels[CalculateOffset(i)].UpdatePanel(inventory.HotInventoryList[i]);   // updates game UI to match hot panels
+                UI_GameInventoryPanels[CalculateOffset(i + 1)].UpdatePanel(inventory.HotInventoryList[i]);   // updates game UI to match hot panels
             }
             else
             {
                 UI_HotInventoryPanels[i].EmptyPanel();
-                UI_GameInventoryPanels[CalculateOffset(i)].EmptyPanel();
+                UI_GameInventoryPanels[CalculateOffset(i + 1)].EmptyPanel();
             }
         }
     }
 
     private int CalculateOffset(int baseValue)
     {
-        int HotOffset = baseValue + inventory.itemIndexOffset;
-        if(HotOffset > UI_GameInventoryPanels.Count)    // wraps the value so it doesn't go outside list index range
+        int HotOffset = baseValue - inventory.itemIndexOffset;
+        if(HotOffset >= UI_GameInventoryPanels.Count)    // wraps the value so it doesn't go outside list index range
         {
             HotOffset -= UI_GameInventoryPanels.Count;
         }
@@ -145,9 +145,11 @@ public class UIManager : MonoBehaviour
     }
 
     
-    public void ScrollHotInventory()
+    public void ScrollHotInventory(float scrollValue)
     {
-        
+        inventory.ScrollHotItems(scrollValue);
+        UpdatePanels();
+
     }
 
 

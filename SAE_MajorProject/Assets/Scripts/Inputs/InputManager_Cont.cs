@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 // input manager is a controller in controller, model, view networking framework
 public class InputManager_Cont : MonoBehaviour
@@ -27,6 +28,9 @@ public class InputManager_Cont : MonoBehaviour
     private InputAction rightMouse; // right mouse click action
     private float LeftClickCount = 0;   // time the left click has been held for
     private float RightClickCount = 0;  // time the right click has been held for
+
+    private InputAction scrollInput;
+    [SerializeField] private float scrollValue;
 
     private InputAction InteractAction; // interact input action (E Key)
     private InputAction EscapeAction;   // Escape Input action (ESC Key)
@@ -67,6 +71,7 @@ public class InputManager_Cont : MonoBehaviour
         lookAction = InputSystem.actions.FindAction("Look Direction");
         MousePositionAction = InputSystem.actions.FindAction("Mouse Position");
         InventoryAction = InputSystem.actions.FindAction("Inventory");
+        scrollInput = InputSystem.actions.FindAction("Scroll");
 
         SetupPanels();
     }
@@ -122,6 +127,14 @@ public class InputManager_Cont : MonoBehaviour
         if(EscapeAction.WasPressedThisFrame())  // checks if Escape has been selected (ESC Key)
         {
             Debug.Log("Player clicked Escape to escape");
+        }
+
+        scrollValue = scrollInput.ReadValue<float>();
+
+        if(scrollValue != 0)
+        {
+            //Debug.Log("Player scroll value is equal to: " + scrollValue);
+            UIManagerScript.ScrollHotInventory(scrollValue);
         }
     }
 

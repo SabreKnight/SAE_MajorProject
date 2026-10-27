@@ -277,7 +277,8 @@ public class InventoryManager : MonoBehaviour
         InventoryList[secondIndex] = tempItem;
 
         UpdateLookup();
-        GameManager.Instance.UIManagerSingleton.SwapSelected(firstIndex, secondIndex);
+        //GameManager.Instance.UIManagerSingleton.SwapSelected(firstIndex, secondIndex);
+        GameManager.Instance.UIManagerSingleton.UpdatePanels();
     }
 
     public void CombineStacks(int dragStackIndex, int targetStackIndex) // combines the stacks of 2 items of the same type into 1 stack
@@ -299,6 +300,12 @@ public class InventoryManager : MonoBehaviour
             dragItem.itemType = null;
             dragItem.currentStackSize = 0;
         }
+        
+        if(dragItem.selectedItemBool == true)
+        {
+            dragItem.selectedItemBool = false;
+            targetItem.selectedItemBool = true;
+        }
 
         UpdateLookup();
         GameManager.Instance.UIManagerSingleton.UpdatePanels();
@@ -312,6 +319,22 @@ public class InventoryManager : MonoBehaviour
         HotInventoryList[HotIndex] = InventoryList[InventoryIndex];
         UpdateLookup();
         GameManager.Instance.UIManagerSingleton.UpdatePanels();
+    }
+
+    public void ScrollHotItems(float scrollValue)
+    {
+        itemIndexOffset -= (int)scrollValue;
+
+        if(itemIndexOffset >= HotInventoryList.Count)
+        {
+            itemIndexOffset = 0;
+        }
+        if(itemIndexOffset <= -1)
+        {
+            itemIndexOffset = HotInventoryList.Count - 1;
+        }
+
+        helditem = HotInventoryList[itemIndexOffset];
     }
 
     #endregion
