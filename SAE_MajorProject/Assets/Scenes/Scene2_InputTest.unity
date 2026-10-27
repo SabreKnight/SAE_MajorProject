@@ -2495,9 +2495,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitMarker: {fileID: 1705664875}
-  heldObject: {fileID: 0}
+  hitMarkerPosition: {x: 0, y: 0}
   grid: {fileID: 462191907}
   inventory: {fileID: 175235202}
+  helditem: {fileID: 0}
+  ToolBehaviourManagerObject: {fileID: 0}
+  leftToolbehaviour: {fileID: 0}
+  rightToolbehaviour: {fileID: 0}
 --- !u!70 &1332454917
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

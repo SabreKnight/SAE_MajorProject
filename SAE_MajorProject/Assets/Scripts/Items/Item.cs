@@ -8,6 +8,7 @@ public class Item : ScriptableObject
     public UseType type;
     public Sprite inventorySprite;
     public int stackSizeLimit = 50;
+    public GameObject ToolbehaviourManagerObject;
 
     // scene object effector needed for tools
 

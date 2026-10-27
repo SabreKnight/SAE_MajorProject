@@ -16,3 +16,4 @@ MonoBehaviour:
   type: 1
   inventorySprite: {fileID: 7452904965680623327, guid: ad6ca260061579040b6981f6e202e3ca, type: 3}
   stackSizeLimit: 1
+  ToolbehaviourManagerObject: {fileID: 1838673524342622620, guid: fc6a0c38a03f8eb48b17894033f1dc7c, type: 3}

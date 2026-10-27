@@ -319,6 +319,7 @@ public class InventoryManager : MonoBehaviour
         HotInventoryList[HotIndex] = InventoryList[InventoryIndex];
         UpdateLookup();
         GameManager.Instance.UIManagerSingleton.UpdatePanels();
+        SetHeldItem();
     }
 
     public void ScrollHotItems(float scrollValue)
@@ -334,7 +335,13 @@ public class InventoryManager : MonoBehaviour
             itemIndexOffset = HotInventoryList.Count - 1;
         }
 
+        SetHeldItem();
+    }
+
+    private void SetHeldItem()
+    {
         helditem = HotInventoryList[itemIndexOffset];
+        GameManager.Instance.inputController.interactionScript.SetheldObject(helditem.itemType);
     }
 
     #endregion
