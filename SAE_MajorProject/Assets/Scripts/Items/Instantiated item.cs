@@ -7,13 +7,20 @@ public class InstantiatedItem
     public Item itemType;   // this stores the item's information
     public int currentStackSize;    // this stores the current stack size of the item
     public int HotInventoryIndex;   // this stores the index for whic hotInventory slot it links to
-    public bool selectedItemBool = false;
+    public bool selectedItemBool = false; 
 
     public InstantiatedItem(Item item, int size, int HotIndex)
     {
         itemType = item;
         currentStackSize = size;
         HotInventoryIndex = HotIndex;
+    }
+
+    public InstantiatedItem(Item item, int size)
+    {
+        itemType = item;
+        currentStackSize = size;
+        HotInventoryIndex = 0;
     }
 
     public InstantiatedItem(Item item)

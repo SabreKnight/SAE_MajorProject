@@ -5,7 +5,7 @@ public class InteractionManager : MonoBehaviour    // attach to player object
     public GameObject hitMarker;
     public Vector2 hitMarkerPosition;
     [SerializeField] private Grid grid;
-    [SerializeField] private InventoryManager inventory;
+    [SerializeField] public InventoryManager inventory;
     public Item helditem;
     public GameObject ToolBehaviourManagerObject;   // this is a prefab which holds the tool behaviour components
     [SerializeField] private ToolBehaviours_BaseClass leftToolbehaviour;
@@ -51,6 +51,26 @@ public class InteractionManager : MonoBehaviour    // attach to player object
 
     }
 
+    public void DropheldObject()
+    {
+        if(inventory.helditem == null || inventory.helditem.itemType == null)
+        {
+            Debug.Log("Attempting to drop no held item");
+            return;
+        }
+
+        InstantiatedItem dropitem = new InstantiatedItem(helditem, inventory.helditem.currentStackSize);
+
+        if(inventory.RemoveItemFromInventory(inventory.helditem, dropitem.currentStackSize))
+        {
+            //Debug.Log(dropitem.currentStackSize + " number of " + helditem.ItemName + " has been dropped by player");
+            GameObject DropObject = new GameObject("DroppedObject", typeof(PickUpItem));
+            DropObject.GetComponent<PickUpItem>().SetupObject(dropitem, Mathf.Sign(hitMarkerPosition.x - transform.position.x), transform.position);
+            Debug.Log(dropitem.currentStackSize + " number of " + helditem.ItemName + " has been dropped by player");
+        }
+        
+    }
+
     public void SetheldObject(Item newHeld)
     {
 
@@ -59,7 +79,14 @@ public class InteractionManager : MonoBehaviour    // attach to player object
             DestroyImmediate(ToolBehaviourManagerObject);
         }
 
-        if(newHeld.ToolbehaviourManagerObject == null)
+        if(newHeld == null)
+        {
+            return; 
+        }
+
+        helditem = newHeld;
+
+        if(newHeld.ToolbehaviourManagerObject == null )
         {
             Debug.Log("New object does not have tool behaviours");
             return;
@@ -69,8 +96,6 @@ public class InteractionManager : MonoBehaviour    // attach to player object
 
         if(toolbehaviour[0] != leftToolbehaviour && toolbehaviour[0] != rightToolbehaviour)
         {
-
-            helditem = newHeld;
             ToolBehaviourManagerObject = Instantiate(newHeld.ToolbehaviourManagerObject, transform.position, Quaternion.identity, this.transform);
 
             foreach(ToolBehaviours_BaseClass behaviour in toolbehaviour)

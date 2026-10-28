@@ -1042,6 +1042,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputController: {fileID: 175235200}
   UIManagerSingleton: {fileID: 175235203}
+  DroppedItemAnimation:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.00995636
+      value: 0.50101894
+      inSlope: -0.58496857
+      outSlope: -0.58496857
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.49685687
+    - serializedVersion: 3
+      time: 0.49005127
+      value: 0
+      inSlope: -2.7359083
+      outSlope: -2.7359083
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.25048578
+      outWeight: 0.11074051
+    - serializedVersion: 3
+      time: 1.0049896
+      value: -0.5
+      inSlope: -0.77718735
+      outSlope: -0.77718735
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.3672889
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &622160461
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2379,7 +2412,7 @@ GameObject:
   - component: {fileID: 1332454917}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

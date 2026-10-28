@@ -29,17 +29,17 @@ public class InventoryManager : MonoBehaviour
             for(int I = 0 ; I < inventorySize; I++) // goes through each item slot in the inventory
             {
                 InventoryList.Add(null);
-                Debug.Log("Inventory size has been updated to: " + InventoryList.Count);
+                //Debug.Log("Inventory size has been updated to: " + InventoryList.Count);
 
                 if(InventoryList.Count == inventorySize)
                 {
-                    Debug.Log("Inventory has reach max size of: " + InventoryList.Count + " which should be equal to: " + inventorySize);
+                    //Debug.Log("Inventory has reach max size of: " + InventoryList.Count + " which should be equal to: " + inventorySize);
                     return;
                 }
                 
             }
 
-            Debug.Log("max items have been added to the inventory without reaching max value");
+            //Debug.Log("max items have been added to the inventory without reaching max value");
         }
     }
     
@@ -50,7 +50,7 @@ public class InventoryManager : MonoBehaviour
             for(int I = 0 ; I < hotListsize; I++) // goes through each item slot in the inventory
             {
                 HotInventoryList.Add(null);
-                Debug.Log("Hot Inventory size has been updated to: " + HotInventoryList.Count);
+                //Debug.Log("Hot Inventory size has been updated to: " + HotInventoryList.Count);
 
                 if(HotInventoryList.Count == hotListsize)
                 {
@@ -60,7 +60,7 @@ public class InventoryManager : MonoBehaviour
                 
             }
 
-            Debug.Log("max items have been added to the inventory without reaching max value");
+            //Debug.Log("max items have been added to the inventory without reaching max value");
         }
     }
 
@@ -231,6 +231,7 @@ public class InventoryManager : MonoBehaviour
                 {
                     invItem.currentStackSize -= removeAmount;   
                     DeleteItem(cullList);
+                    GameManager.Instance.UIManagerSingleton.UpdatePanels();
                     return true;
                 }
 
@@ -244,6 +245,10 @@ public class InventoryManager : MonoBehaviour
         {
             item.itemType = null;
             item.currentStackSize = 0;
+            if(item == helditem)
+            {
+                helditem = null;
+            }
         }
         else
         {
@@ -251,8 +256,9 @@ public class InventoryManager : MonoBehaviour
         }
 
         Debug.Log("Enough items in single stack");
+        GameManager.Instance.UIManagerSingleton.UpdatePanels();
         return true;
-
+        
     }  
 
     private void DeleteItem(InstantiatedItem[] items)   // deletes a collection of stacks

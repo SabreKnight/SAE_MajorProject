@@ -35,6 +35,7 @@ public class InputManager_Cont : MonoBehaviour
     private InputAction InteractAction; // interact input action (E Key)
     private InputAction EscapeAction;   // Escape Input action (ESC Key)
     private InputAction InventoryAction;
+    private InputAction dropInput;
 
 # endregion
 
@@ -72,6 +73,7 @@ public class InputManager_Cont : MonoBehaviour
         MousePositionAction = InputSystem.actions.FindAction("Mouse Position");
         InventoryAction = InputSystem.actions.FindAction("Inventory");
         scrollInput = InputSystem.actions.FindAction("Scroll");
+        dropInput = InputSystem.actions.FindAction("Drop Item");
 
         SetupPanels();
     }
@@ -127,6 +129,12 @@ public class InputManager_Cont : MonoBehaviour
         if(EscapeAction.WasPressedThisFrame())  // checks if Escape has been selected (ESC Key)
         {
             Debug.Log("Player clicked Escape to escape");
+        }
+
+        if(dropInput.WasPressedThisFrame())  // checks if Escape has been selected (ESC Key)
+        {
+            interactionScript.DropheldObject();
+            Debug.Log("Player clicked Q to Drop Item");
         }
 
         scrollValue = scrollInput.ReadValue<float>();
