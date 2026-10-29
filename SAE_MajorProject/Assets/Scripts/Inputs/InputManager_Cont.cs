@@ -8,7 +8,7 @@ public class InputManager_Cont : MonoBehaviour
     public InputActionAsset InputAction;
     public InteractionManager interactionScript;
     [SerializeField] private UIManager UIManagerScript;
-    private bool UIOverride = false;
+    [HideInInspector] public bool UIOverride = false;
 
 # region Movement Inputs
     private InputAction moveAction;
@@ -114,17 +114,17 @@ public class InputManager_Cont : MonoBehaviour
             UIOverride = UIManagerScript.InventoryinputButton();
         }
 
+        if(InteractAction.WasPressedThisFrame())    // checks interact button (E Key)
+        {
+            interactionScript.InteractkeyMethod();
+        }
+
     }
     private void CheckMisc()    // checks any miscellanious inputs short enough for just 1 functions
     {
         //Checks Movement values
         moveValue = moveAction.ReadValue<Vector2>();    // checks movement values for the player
         MovePlayer(moveValue);  // calls movement script
-
-        if(InteractAction.WasPressedThisFrame())    // checks interact button (E Key)
-        {
-            Debug.Log("Player clicked E to Interact, mouse position is: " + Mouseposition);
-        }
 
         if(EscapeAction.WasPressedThisFrame())  // checks if Escape has been selected (ESC Key)
         {

@@ -9,6 +9,8 @@ public class InteractionManager : MonoBehaviour    // attach to player object
     public Vector2 hitMarkerPosition;
     [SerializeField] private Grid grid;
     [SerializeField] public InventoryManager inventory;
+
+    [Header("Tool behaviours")]
     public Item helditem;
     public GameObject ToolBehaviourManagerObject;   // this is a prefab which holds the tool behaviour components
     [SerializeField] private ToolBehaviours_BaseClass leftToolbehaviour;
@@ -74,7 +76,20 @@ public class InteractionManager : MonoBehaviour    // attach to player object
 
     public void InteractkeyMethod()
     {
-        //I_HitObject[] obj = FindObjectsOfType<MonoBehaviour>(true).OfType<I_HitObject>();
+        Collider2D[] collArray = new Collider2D[10];
+        collArray = Physics2D.OverlapBoxAll((Vector2)hitMarkerPosition, Vector2.one, 0f);
+
+        Debug.Log("Attempting to interact with object");
+        foreach(Collider2D coll in collArray)
+        {
+            if(coll.gameObject.TryGetComponent<I_InteractObject>(out I_InteractObject hitObj) && coll != null)
+            {
+                hitObj.InteractObjectMethod();
+                return;
+            }
+        }
+
+        Debug.Log("No object to interact with");
     }
 
     public void DropheldObject()

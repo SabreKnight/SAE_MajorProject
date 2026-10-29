@@ -109,8 +109,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -20, y: 20}
-  m_SizeDelta: {x: 40, y: 20}
+  m_AnchoredPosition: {x: -37.5, y: 19.7}
+  m_SizeDelta: {x: 55, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4695321313522410472
 CanvasRenderer:
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 38
+  m_text: 4
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -174,7 +174,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 4
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -229,7 +229,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &632599479445647039
 RectTransform:
   m_ObjectHideFlags: 0
@@ -447,10 +447,12 @@ MonoBehaviour:
     itemType: {fileID: 0}
     currentStackSize: 0
     HotInventoryIndex: 0
+    selectedItemBool: 0
   StackSizeText: {fileID: 3237231076902923444}
   HotkeyStackSize: {fileID: 2887079844377224697}
   iconimage: {fileID: 3268177699006119167}
   outlinePanel: {fileID: 4142805810001334808}
+  SelectedBool: 0
 --- !u!1 &8715370109667260132
 GameObject:
   m_ObjectHideFlags: 0

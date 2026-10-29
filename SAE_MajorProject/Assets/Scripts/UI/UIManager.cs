@@ -9,10 +9,13 @@ public class UIManager : MonoBehaviour
 
     public InventoryManager inventory;
     [SerializeField] private GameObject InventoryPanelObject;
+    [SerializeField] private GameObject HotPanelObject;
+    [SerializeField] private GameObject InteractPanelObject;
 
     [SerializeField] public List<UI_itemPanel> UI_InventoryPanels;
     [SerializeField] public List<UI_itemPanel> UI_HotInventoryPanels;
     [SerializeField] private List<UI_itemPanel> UI_GameInventoryPanels;
+    [SerializeField] private List<UI_itemPanel> UI_InteractPanels;
 
     private bool OpenInventoryBool = true;
 
@@ -25,6 +28,8 @@ public class UIManager : MonoBehaviour
     {
         OpenInventoryBool = false;
         InventoryPanelObject.SetActive(false);
+        HotPanelObject.SetActive(false);
+        InteractPanelObject.SetActive(false);
 
         for(int i = 0; i < UI_InventoryPanels.Count; i++)
         {
@@ -61,19 +66,50 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Player closed the inventory panel");
-            OpenInventoryBool = false;
-            InventoryPanelObject.SetActive(false);
+            closePanels();
             return false;
         }
+    }
+
+    private void closePanels()
+    {
+        Debug.Log("Player closed the inventory panel");
+        OpenInventoryBool = false;
+        InventoryPanelObject.SetActive(false);
+        HotPanelObject.SetActive(false);
+        InteractPanelObject.SetActive(false);
     }
 
     private void OpenInventoryPanel()
     {
         InventoryPanelObject.SetActive(true);
+        HotPanelObject.SetActive(true);
         inventory.UpdateLookup();
         //inventory.UpdateHotPanels();
         UpdatePanels();
+    }
+
+    private bool InteractPanelButton()
+    {
+        if(!OpenInventoryBool)
+        {
+            Debug.Log("Player opened the interactable object panel");
+            OpenInventoryBool = true;
+
+            InventoryPanelObject.SetActive(true);
+            InteractPanelObject.SetActive(true);
+            inventory.UpdateLookup();
+
+
+            return true;
+        }
+        else
+        {
+            OpenInventoryBool = false;
+            InventoryPanelObject.SetActive(false);
+            InteractPanelObject.SetActive(false);
+            return false;
+        }
     }
 
     public InstantiatedItem FindHotPanelItem(UI_itemPanel panelref)

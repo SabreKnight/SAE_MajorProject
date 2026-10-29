@@ -7,3 +7,11 @@ public interface I_HitObject
         
     }
 }
+
+public interface I_InteractObject
+{
+    public void InteractObjectMethod()
+    {
+        
+    }
+}
