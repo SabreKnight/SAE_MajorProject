@@ -35,7 +35,7 @@ IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHan
 
     public void UpdatePanel(InstantiatedItem item)
     {
-        Debug.Log("item panel: " + inventoryIndexInt + " has been updated of type: " + panelType);
+        //Debug.Log("item panel: " + inventoryIndexInt + " has been updated of type: " + panelType);
         instantiatedItem = item;
         StackSizeText.text = instantiatedItem.currentStackSize.ToString();
         iconimage.sprite = instantiatedItem.itemType.inventorySprite;
@@ -50,7 +50,7 @@ IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHan
 
     public void EmptyPanel()
     {
-        Debug.Log("item panel: " + inventoryIndexInt + " has been NOT updated of type: " + panelType);
+        //Debug.Log("item panel: " + inventoryIndexInt + " has been NOT updated of type: " + panelType);
         instantiatedItem = new InstantiatedItem(instantiatedItem.HotInventoryIndex);
         StackSizeText.text = "";
         iconimage.sprite = null;

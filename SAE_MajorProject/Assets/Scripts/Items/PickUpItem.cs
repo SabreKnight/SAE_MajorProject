@@ -69,7 +69,7 @@ public class PickUpItem : MonoBehaviour
             if(collider != null && collider.gameObject.CompareTag("Player"))
             {
                 playerRef = collider.gameObject;
-                Debug.Log("Player located: " + playerRef);
+                Debug.Log("Player object located: " + playerRef);
             }
         }
     }
@@ -86,8 +86,8 @@ public class PickUpItem : MonoBehaviour
             lerpvalue += 0.01f;
 
             transform.position = startingposition;
-            Debug.Log("Lerp scale: " + lerpScale + " lerp value: " + lerpvalue);
-            Debug.Log("current drop position: " + startingposition + " current lerp value is: " + lerpvalue + " and current drop curve value is: " + dropCurve.Evaluate(lerpvalue));
+           // Debug.Log("Lerp scale: " + lerpScale + " lerp value: " + lerpvalue);
+            //Debug.Log("current drop position: " + startingposition + " current lerp value is: " + lerpvalue + " and current drop curve value is: " + dropCurve.Evaluate(lerpvalue));
             yield return new WaitForSeconds(0.01f);
         }
 

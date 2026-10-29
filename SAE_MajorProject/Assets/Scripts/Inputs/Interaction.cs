@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using Unity.Mathematics;
+using UnityEditor;
 using UnityEngine;
 
 public class InteractionManager : MonoBehaviour    // attach to player object
@@ -10,30 +13,53 @@ public class InteractionManager : MonoBehaviour    // attach to player object
     public GameObject ToolBehaviourManagerObject;   // this is a prefab which holds the tool behaviour components
     [SerializeField] private ToolBehaviours_BaseClass leftToolbehaviour;
     [SerializeField] private ToolBehaviours_BaseClass rightToolbehaviour;
-    
-    //private I_HitObject[] hitMarkerOutputArray = new I_HitObject[10];
+    private List<I_HitObject> hitMarkerOutputArray;
 
     private Vector3 markerOffset = new Vector3(0.5f, 0.5f, 0);
 
     public void LeftClick()
     {
-        if(helditem == null || ToolBehaviourManagerObject == null)
+        if(helditem == null || ToolBehaviourManagerObject == null)  // checks if there is an object and tool behaviour to use
         {
             return;
         }
 
-        switch(helditem.type)
+        switch(helditem.type)   // checks what type of object is beign used 
         {
-            case UseType.Tool:
+            case UseType.Tool:  // currently held object is a tool
             {
-                Debug.Log("Player attempted to use the Tool: " + helditem.ItemName);
-                I_HitObject[] hitMarkerOutputArray = leftToolbehaviour.ToolClickMethod(hitMarkerPosition);
+                //Debug.Log("Player attempted to use the Tool: " + helditem.ItemName);
+                hitMarkerOutputArray = leftToolbehaviour.ToolClickMethod(hitMarkerPosition);
+                UseTools(hitMarkerOutputArray);
                 return;
             }
             default:
             {
                 Debug.Log("No specified item has been selected");
                 return;
+            }
+        }
+    }
+
+    public void UseTools(List<I_HitObject> hitarray)
+    {
+        if(hitarray == null )
+        {
+            Debug.Log("No hittable objects found in array");    
+        }
+
+        for (int i = 0; i < hitarray.Count; i++)
+        {
+            //Debug.Log();
+            I_HitObject hit = hitarray[i];
+            if(hit != null)
+            {
+                Debug.Log("using: " + helditem + " to hit: "  + hit);
+                hit.HitObjectMethod(helditem);
+            }
+            else
+            {
+                Debug.Log("No hittable object reference to use tool on: " + hitarray[i]);
             }
         }
     }
@@ -48,7 +74,7 @@ public class InteractionManager : MonoBehaviour    // attach to player object
 
     public void InteractkeyMethod()
     {
-
+        //I_HitObject[] obj = FindObjectsOfType<MonoBehaviour>(true).OfType<I_HitObject>();
     }
 
     public void DropheldObject()
@@ -73,26 +99,41 @@ public class InteractionManager : MonoBehaviour    // attach to player object
 
     public void SetheldObject(Item newHeld)
     {
+        Debug.Log("attempting to set new held object in interaction window");
+        if(newHeld == helditem)
+        {
+            Debug.Log("new held object is the same as old held object");
+            return;
+        }
 
         if(ToolBehaviourManagerObject != null)
         {
+            Debug.Log("removing tool behaviour: " + ToolBehaviourManagerObject);
             DestroyImmediate(ToolBehaviourManagerObject);
+
+            ToolBehaviourManagerObject = null;
+            leftToolbehaviour = null;
+            rightToolbehaviour = null;
         }
 
         if(newHeld == null)
         {
+            Debug.Log("new held object being set is a null object");
+            helditem = null;
             return; 
         }
 
         helditem = newHeld;
+        Debug.Log("new held object in interaction window is: " + helditem);
 
-        if(newHeld.ToolbehaviourManagerObject == null )
+        if(newHeld.ToolbehaviourManagerObject == null)
         {
             Debug.Log("New object does not have tool behaviours");
             return;
         }
 
         ToolBehaviours_BaseClass[] toolbehaviour = newHeld.ToolbehaviourManagerObject.GetComponents<ToolBehaviours_BaseClass>();
+        Debug.Log("new tool behaviours are: " + toolbehaviour[0]);
 
         if(toolbehaviour[0] != leftToolbehaviour && toolbehaviour[0] != rightToolbehaviour)
         {
@@ -111,8 +152,6 @@ public class InteractionManager : MonoBehaviour    // attach to player object
                     Debug.Log("swapped Secondary tool behaviour to: " + behaviour);
                 }
             }
-
-            
         }
     }
 

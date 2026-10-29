@@ -8,7 +8,13 @@ public class Item : ScriptableObject
     public UseType type;
     public Sprite inventorySprite;
     public int stackSizeLimit = 50;
+
+    [Header("Tool and Weapons")]
     public GameObject ToolbehaviourManagerObject;
+    public float damageStat = 1;
+    public float CritChance = 0.2f;
+    public float critMultiplier = 2;
+    public float altmultiplier = 1;
 
     // scene object effector needed for tools
 

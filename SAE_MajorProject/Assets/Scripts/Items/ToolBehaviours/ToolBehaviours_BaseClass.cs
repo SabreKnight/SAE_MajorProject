@@ -1,9 +1,12 @@
 using UnityEngine;
+using System.Collections.Generic;
+using System.Collections;
+using NUnit.Framework.Constraints;
 
 public abstract class ToolBehaviours_BaseClass : MonoBehaviour
 {
-    protected I_HitObject[] hitobjectArray = new I_HitObject[10];
-    protected Collider2D[] hitArray = new Collider2D[10];
+    [SerializeField] protected List<I_HitObject> hitobjectArray = new List<I_HitObject>();
+    [SerializeField] protected Collider2D[] hitArray;
     [SerializeField] protected InteractionManager interactionManagerRef;
     public bool PrimaryAction; 
 
@@ -16,7 +19,7 @@ public abstract class ToolBehaviours_BaseClass : MonoBehaviour
     }
 
     // tool method for when the appropriate tool use button is clicked
-    public virtual I_HitObject[] ToolClickMethod(Vector2 hitMarker)
+    public virtual List<I_HitObject> ToolClickMethod(Vector2 hitMarker)
     {
         UnityEngine.Debug.Log("player clicked to use this tool");
         return null;

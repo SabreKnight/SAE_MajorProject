@@ -97,7 +97,7 @@ public class InventoryManager : MonoBehaviour
 
                         newArray[InventoryLookup[item].Length] = I;
                         InventoryLookup[item] = newArray;
-                        Debug.Log("item ( " + item.ItemName + ") has been updated in lookup to add index: " + I );
+                        //Debug.Log("item ( " + item.ItemName + ") has been updated in lookup to add index: " + I );
                     }
                 }
                 else
@@ -105,7 +105,7 @@ public class InventoryManager : MonoBehaviour
                     int[] newArray = new int[1];
                     newArray[0] = I;
                     InventoryLookup.Add(item, newArray);
-                    Debug.Log("New item (" + item.ItemName + ") added to lookup at: " + I);
+                    //Debug.Log("New item (" + item.ItemName + ") added to lookup at: " + I);
                 }       
             }
         }
@@ -118,7 +118,7 @@ public class InventoryManager : MonoBehaviour
                 text += index + ", ";
             }
 
-            Debug.Log(text);
+            //Debug.Log(text);
         }
     }
 
@@ -157,6 +157,7 @@ public class InventoryManager : MonoBehaviour
                     {
                         InventoryItem.currentStackSize = combinedSize;  // adds the items to the list 
                         Debug.Log("all items added successfully");
+                        GameManager.Instance.UIManagerSingleton.UpdatePanels();
                         return 0;   // returns 0 as all items were collected and added to inventory
                     }
                 }
@@ -192,7 +193,9 @@ public class InventoryManager : MonoBehaviour
             }
 
         }
+        
         Debug.Log("All items added");
+        GameManager.Instance.UIManagerSingleton.UpdatePanels();
         return 0;
     }
 
@@ -346,6 +349,7 @@ public class InventoryManager : MonoBehaviour
 
     private void SetHeldItem()
     {
+        //Debug.Log("Setting held object in inventory to: " + HotInventoryList[itemIndexOffset]);
         helditem = HotInventoryList[itemIndexOffset];
         GameManager.Instance.inputController.interactionScript.SetheldObject(helditem.itemType);
     }
