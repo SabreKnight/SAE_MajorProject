@@ -246,6 +246,7 @@ public class InventoryManager : MonoBehaviour
 
         if(item.currentStackSize == removeAmount)   // checks if it will remove all items from stack
         {
+            Debug.Log(" all items in " + item.itemType + " have been removed");
             item.itemType = null;
             item.currentStackSize = 0;
             if(item == helditem)
@@ -255,10 +256,11 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
+            Debug.Log(removeAmount + " have been removed from " + item);
             item.currentStackSize -= removeAmount;
         }
 
-        Debug.Log("Enough items in single stack");
+        Debug.Log("Enough items in single stack: ");
         GameManager.Instance.UIManagerSingleton.UpdatePanels();
         return true;
         

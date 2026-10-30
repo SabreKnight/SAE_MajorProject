@@ -74,7 +74,7 @@ public class InteractionManager : MonoBehaviour    // attach to player object
         hitMarker.transform.position = hitMarkerPosition;
     }
 
-    public void InteractkeyMethod()
+    public bool InteractkeyMethod()
     {
         Collider2D[] collArray = new Collider2D[10];
         collArray = Physics2D.OverlapBoxAll((Vector2)hitMarkerPosition, Vector2.one, 0f);
@@ -84,12 +84,12 @@ public class InteractionManager : MonoBehaviour    // attach to player object
         {
             if(coll.gameObject.TryGetComponent<I_InteractObject>(out I_InteractObject hitObj) && coll != null)
             {
-                hitObj.InteractObjectMethod();
-                return;
+                return hitObj.InteractObjectMethod();
             }
         }
-
+        
         Debug.Log("No object to interact with");
+        return false;
     }
 
     public void DropheldObject()

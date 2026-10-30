@@ -15,7 +15,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] public List<UI_itemPanel> UI_InventoryPanels;
     [SerializeField] public List<UI_itemPanel> UI_HotInventoryPanels;
     [SerializeField] private List<UI_itemPanel> UI_GameInventoryPanels;
-    [SerializeField] private List<UI_itemPanel> UI_InteractPanels;
+    [SerializeField] public List<UI_itemPanel> UI_InteractPanels;
+    [SerializeField] public List<Image> UI_rewardPanels;
+
+    [SerializeField] public I_InteractObject currentInteraction;
 
     private bool OpenInventoryBool = true;
 
@@ -89,27 +92,34 @@ public class UIManager : MonoBehaviour
         UpdatePanels();
     }
 
-    private bool InteractPanelButton()
+    public bool InteractPanelButton(I_InteractObject interactable)
     {
         if(!OpenInventoryBool)
         {
             Debug.Log("Player opened the interactable object panel");
             OpenInventoryBool = true;
-
             InventoryPanelObject.SetActive(true);
             InteractPanelObject.SetActive(true);
             inventory.UpdateLookup();
-
+            currentInteraction = interactable;
+            UpdatePanels();
 
             return true;
         }
         else
         {
             OpenInventoryBool = false;
-            InventoryPanelObject.SetActive(false);
-            InteractPanelObject.SetActive(false);
+            currentInteraction = null;
+
             return false;
         }
+    }
+
+    public void CloseInteractPanel()
+    {
+        InventoryPanelObject.SetActive(false);
+        InteractPanelObject.SetActive(false);
+        Debug.Log("Player closed interact panel");
     }
 
     public InstantiatedItem FindHotPanelItem(UI_itemPanel panelref)
@@ -152,6 +162,7 @@ public class UIManager : MonoBehaviour
                 UI_GameInventoryPanels[CalculateOffset(i + 1)].EmptyPanel();
             }
         }
+        
     }
 
     private int CalculateOffset(int baseValue)

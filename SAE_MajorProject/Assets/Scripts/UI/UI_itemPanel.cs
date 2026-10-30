@@ -22,10 +22,11 @@ IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHan
     public Image outlinePanel;
     [SerializeField] private bool SelectedBool;
     
+    
 
 #endregion
 #region Updating
-    void OnEnable()
+    void Start()
     {
         if(UIManagerReference == null)
         {
@@ -37,13 +38,26 @@ IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHan
     {
         //Debug.Log("item panel: " + inventoryIndexInt + " has been updated of type: " + panelType);
         instantiatedItem = item;
-        StackSizeText.text = instantiatedItem.currentStackSize.ToString();
         iconimage.sprite = instantiatedItem.itemType.inventorySprite;
         iconimage.color = Color.white;
 
         if(panelType == PanelType.OwnedPanel)
         {
             BoolgetSet = instantiatedItem.selectedItemBool;
+        }
+
+        if(panelType == PanelType.ProgressPanel)
+        {
+            StackSizeText.text = instantiatedItem.currentStackSize.ToString() + "/" + instantiatedItem.quotaCount;
+
+            if(instantiatedItem.currentStackSize >= instantiatedItem.quotaCount)
+            {
+                outlinePanel.color = Color.blue;
+            }
+        }
+        else
+        {
+            StackSizeText.text = instantiatedItem.currentStackSize.ToString();
         }
         
     }
@@ -94,6 +108,7 @@ IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHan
         if(panelType != PanelType.OwnedPanel)
         {
             Debug.Log("not a dragable panel");
+            return;
         }
 
         tempDragObject = new GameObject("Dragged_UI_Object");   // creates a temporary UI object to be dragged
@@ -180,6 +195,21 @@ IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHan
                 Debug.Log("attempting to drag onto a game panel, which is invalid");
                 break;
             }
+            case PanelType.ProgressPanel:
+            {
+                if(instantiatedItem.currentStackSize >= instantiatedItem.quotaCount || instantiatedItem == null)
+                {
+                    Debug.Log("Progress quota for this item has been filled");
+                    return;
+                }
+
+                int leftover = UIManagerReference.currentInteraction.DepositItem(droppedItemPanel.instantiatedItem, inventoryIndexInt);
+
+                Debug.Log(leftover + " are left over from " + droppedItemPanel.instantiatedItem.currentStackSize);
+                UIManagerReference.inventory.RemoveItemFromInventory(droppedItemPanel.instantiatedItem, droppedItemPanel.instantiatedItem.currentStackSize - leftover);
+
+                break;
+            }
         }
         
     }
@@ -216,5 +246,6 @@ public enum PanelType
 {
     OwnedPanel = 0,
     HotPanel = 1,
-    GamePanel = 2
+    GamePanel = 2,
+    ProgressPanel = 3
 };

@@ -10,8 +10,14 @@ public interface I_HitObject
 
 public interface I_InteractObject
 {
-    public void InteractObjectMethod()
+    public bool InteractObjectMethod()
     {
-        
+        return false;
+    }
+
+    public int DepositItem(InstantiatedItem item, int panelIndex)
+    {
+
+        return 0;
     }
 }

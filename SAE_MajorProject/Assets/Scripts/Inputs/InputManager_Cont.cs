@@ -75,6 +75,11 @@ public class InputManager_Cont : MonoBehaviour
         scrollInput = InputSystem.actions.FindAction("Scroll");
         dropInput = InputSystem.actions.FindAction("Drop Item");
 
+        if(UIManagerScript == null)
+        {
+            UIManagerScript = GameManager.Instance.UIManagerSingleton;
+        }
+
         SetupPanels();
     }
 
@@ -116,7 +121,7 @@ public class InputManager_Cont : MonoBehaviour
 
         if(InteractAction.WasPressedThisFrame())    // checks interact button (E Key)
         {
-            interactionScript.InteractkeyMethod();
+            UIOverride = interactionScript.InteractkeyMethod();
         }
 
     }

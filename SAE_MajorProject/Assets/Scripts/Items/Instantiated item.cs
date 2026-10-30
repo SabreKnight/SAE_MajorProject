@@ -8,12 +8,14 @@ public class InstantiatedItem
     public int currentStackSize;    // this stores the current stack size of the item
     public int HotInventoryIndex;   // this stores the index for whic hotInventory slot it links to
     public bool selectedItemBool = false; 
+    public int quotaCount;
 
     public InstantiatedItem(Item item, int size, int HotIndex)
     {
         itemType = item;
         currentStackSize = size;
         HotInventoryIndex = HotIndex;
+        quotaCount = HotIndex;
     }
 
     public InstantiatedItem(Item item, int size)
