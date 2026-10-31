@@ -36,19 +36,20 @@ public interface I_InteractObject
     }
 }
 
-public interface I_EnemyBehaviour
+public abstract class BehaviourState_BaseClass
 {
-    public void EnterbehaviourState(EnemyActionManager actionManager)
+    protected EnemyActionManager enemyActionManagerRef;
+    public void EnterBehaviourState(EnemyActionManager actionManager)
     {
-        
+        enemyActionManagerRef = actionManager;
     }
 
-    public bool ActivebehaviourState()
+    public bool ActiveBehaviourState()
     {
         return true;
     }
 
-    private void ExitbehaviourState()
+    public void ExitBehaviourState()
     {
         
     }

@@ -21,3 +21,4 @@ MonoBehaviour:
   CritChance: 0.2
   critMultiplier: 2
   altmultiplier: 1
+  KnockbackMult: 0.1
