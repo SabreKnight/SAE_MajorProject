@@ -1,10 +1,24 @@
 using UnityEngine;
+using System.Collections;
 
 public interface I_HitObject
 {
     public void HitObjectMethod(Item tool)
     {
         
+    }
+
+    public void HitObjectMethod(Item tool, float altmult)
+    {
+        
+    }
+}
+
+public interface I_DeathManager
+{
+    public IEnumerator CharacterDied(Health_BaseClass characterHealth)
+    {
+        yield return null;
     }
 }
 
