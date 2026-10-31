@@ -35,3 +35,21 @@ public interface I_InteractObject
         return 0;
     }
 }
+
+public interface I_EnemyBehaviour
+{
+    public void EnterbehaviourState(EnemyActionManager actionManager)
+    {
+        
+    }
+
+    public bool ActivebehaviourState()
+    {
+        return true;
+    }
+
+    private void ExitbehaviourState()
+    {
+        
+    }
+}
