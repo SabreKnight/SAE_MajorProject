@@ -15,6 +15,7 @@ public class Item : ScriptableObject
     public float CritChance = 0.2f;
     public float critMultiplier = 2;
     public float altmultiplier = 1;
+    public float KnockbackMult = 1;
 
     // scene object effector needed for tools
 

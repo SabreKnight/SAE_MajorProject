@@ -57,7 +57,7 @@ public class InteractionManager : MonoBehaviour    // attach to player object
             if(hit != null)
             {
                 Debug.Log("using: " + helditem + " to hit: "  + hit);
-                hit.HitObjectMethod(helditem);
+                hit.HitObjectMethod(helditem, transform.position);
             }
             else
             {

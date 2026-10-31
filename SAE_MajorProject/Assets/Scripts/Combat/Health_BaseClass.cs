@@ -9,7 +9,7 @@ public class Health_BaseClass : MonoBehaviour, I_HitObject
 
     [Header("Death")]
     public float DeathCoolDown = 2f;
-    public I_DeathManager charManagerRef;
+    [SerializeField] public I_DeathManager charManagerRef;
 
     [Header("Invulnurability")]
     [SerializeField] protected float InvultimerCount = 0.2f;
@@ -29,21 +29,25 @@ public class Health_BaseClass : MonoBehaviour, I_HitObject
 
             Mathf.Clamp(health, 0f, fullhealth);
 
-            if(health == 0f)
+            if(health <= 0f)
             {
-                CharacterDeath();
                 health = fullhealth;
+                CharacterDeath();
             }
         }
     }
 
-    public virtual void HitObjectMethod(Item Weapon)
+    public virtual void HitObjectMethod(Item Weapon, Vector3 hitDirection)
     {
-        HitObjectMethod(Weapon, 1f);
+        HitObjectMethod(Weapon, 1f, hitDirection);
     }
 
-    public virtual void HitObjectMethod(Item weapon, float altmult)
+    public virtual void HitObjectMethod(Item weapon, float altmult, Vector3 hitDirection)
     {
+        Vector3 KnockbackDirection = (transform.position - hitDirection).normalized * weapon.KnockbackMult;
+
+        transform.position += KnockbackDirection;
+
         if(invulBool == true)
         {
             Debug.Log("Invulnerability is currently active on: " + this);
@@ -81,7 +85,21 @@ public class Health_BaseClass : MonoBehaviour, I_HitObject
 
     protected virtual void CharacterDeath()
     {
-        Debug.Log(this.gameObject + " character has died");
+        if(charManagerRef == null)
+        {
+            Debug.Log("No reference for character manager on object");
+        }
+        Debug.Log(this.gameObject + " character has died, sending to death manager: ");
+        GetComponent<SpriteRenderer>().enabled = false;
         StartCoroutine(charManagerRef.CharacterDied(this));
+    }
+
+    public virtual void CharacterSpawn(I_DeathManager deathManager)
+    {
+        charManagerRef = deathManager;
+        GetComponent<SpriteRenderer>().enabled = true;
+        health = fullhealth;
+
+        Debug.Log(this.gameObject + " has been spawned with: " + health + " health death manager as: " + charManagerRef);
     }
 }

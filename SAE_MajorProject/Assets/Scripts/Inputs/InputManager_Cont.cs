@@ -215,7 +215,7 @@ public class InputManager_Cont : MonoBehaviour
 
         if(leftMouse.WasReleasedThisFrame())
         {
-            Debug.Log("Left Mouse was Released, mouse was held for: " + LeftClickCount);
+            //Debug.Log("Left Mouse was Released, mouse was held for: " + LeftClickCount);
             LeftClickCount = 0;
         }
     }

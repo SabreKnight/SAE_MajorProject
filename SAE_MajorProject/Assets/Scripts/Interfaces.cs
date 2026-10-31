@@ -3,12 +3,12 @@ using System.Collections;
 
 public interface I_HitObject
 {
-    public void HitObjectMethod(Item tool)
+    public void HitObjectMethod(Item tool, Vector3 HitDirection)
     {
         
     }
 
-    public void HitObjectMethod(Item tool, float altmult)
+    public void HitObjectMethod(Item tool, float altmult, Vector2 HitDirection)
     {
         
     }
