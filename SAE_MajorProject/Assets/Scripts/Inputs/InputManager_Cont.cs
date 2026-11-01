@@ -120,7 +120,7 @@ public class InputManager_Cont : MonoBehaviour
     {
         if(InventoryAction.WasPressedThisFrame())
         {
-            UIOverride = UIManagerScript.InventoryinputButton();
+            UITabButton();
         }
 
         if(InteractAction.WasPressedThisFrame())    // checks interact button (E Key)
@@ -128,6 +128,10 @@ public class InputManager_Cont : MonoBehaviour
             UIOverride = interactionScript.InteractkeyMethod();
         }
 
+        if(EscapeAction.WasPressedThisFrame())  // checks if Escape has been selected (ESC Key)
+        {
+            UIEscButton();
+        }
     }
 
     private void CheckPhysMisc()
@@ -139,11 +143,6 @@ public class InputManager_Cont : MonoBehaviour
 
     private void CheckMisc()    // checks any miscellanious inputs short enough for just 1 functions
     {
-
-        if(EscapeAction.WasPressedThisFrame())  // checks if Escape has been selected (ESC Key)
-        {
-            Debug.Log("Player clicked Escape to escape");
-        }
 
         if(dropInput.WasPressedThisFrame())  // checks if Escape has been selected (ESC Key)
         {
@@ -252,7 +251,15 @@ public class InputManager_Cont : MonoBehaviour
         
     }
 
+    public void UITabButton()
+    {
+        UIOverride = UIManagerScript.InventoryinputButton();
+    }
 
+    public void UIEscButton()
+    {
+        UIOverride = UIManagerScript.OpenEscMenu();
+    }
 
 
 

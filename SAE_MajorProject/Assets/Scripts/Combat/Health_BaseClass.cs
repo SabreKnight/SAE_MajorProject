@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
@@ -17,6 +18,10 @@ public class Health_BaseClass : MonoBehaviour, I_Dammageable
     [SerializeField] protected float invulCurrentTime;
     [SerializeField] protected bool invulBool;
 
+    protected virtual void Update()
+    {
+        
+    }
     protected virtual float HealthGetSet
     {
         get
@@ -48,7 +53,7 @@ public class Health_BaseClass : MonoBehaviour, I_Dammageable
         Damaged(weapon.attackStats, hitDirection);
     }
 
-    public void Damaged(AttackStats attackStats, Vector3 hitDirection)
+    public virtual void Damaged(AttackStats attackStats, Vector3 hitDirection)
     {
         Vector3 KnockbackDirection = (transform.position - hitDirection).normalized * attackStats.KnockbackMult;
 

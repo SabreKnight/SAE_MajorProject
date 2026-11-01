@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEditor;
 //using UnityEngine.EventSystems;
 
 public class UIManager : MonoBehaviour
@@ -11,6 +12,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject InventoryPanelObject;
     [SerializeField] private GameObject HotPanelObject;
     [SerializeField] private GameObject InteractPanelObject;
+    [SerializeField] private GameObject MenuPanelObject;
 
     [SerializeField] public List<UI_itemPanel> UI_InventoryPanels;
     [SerializeField] public List<UI_itemPanel> UI_HotInventoryPanels;
@@ -21,6 +23,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] public I_InteractObject currentInteraction;
 
     private bool OpenInventoryBool = true;
+    private bool OpenMenuBool = false;
 
     public void OnEnable()
     {
@@ -197,6 +200,18 @@ public class UIManager : MonoBehaviour
         inventory.ScrollHotItems(scrollValue);
         UpdatePanels();
 
+    }
+
+    public bool OpenEscMenu()
+    {
+        if(!OpenMenuBool)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 
