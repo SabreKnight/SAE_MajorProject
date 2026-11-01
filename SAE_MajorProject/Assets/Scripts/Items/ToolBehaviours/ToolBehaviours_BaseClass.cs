@@ -8,6 +8,7 @@ public abstract class ToolBehaviours_BaseClass : MonoBehaviour
     [SerializeField] protected List<I_HitObject> hitobjectArray = new List<I_HitObject>();
     [SerializeField] protected Collider2D[] hitArray;
     [SerializeField] protected InteractionManager interactionManagerRef;
+    [SerializeField] public Item tooltype;
     public bool PrimaryAction; 
 
     protected virtual void OnEnable()  // gets the reference to the interaction manager reference

@@ -22,11 +22,11 @@ public class HarvestObjects : MonoBehaviour, I_HitObject
             return;
         }
 
-        float damage = tool.damageStat;
+        float damage = tool.attackStats.damageStat;
 
-        if(Random.Range(0f, 1f) <= tool.CritChance)
+        if(Random.Range(0f, 1f) <= tool.attackStats.CritChance)
         {
-            damage *= tool.critMultiplier;
+            damage *= tool.attackStats.critMultiplier;
         }
         
         Debug.Log(this.gameObject + " took: " + damage + " damage from: " + tool.ItemName);

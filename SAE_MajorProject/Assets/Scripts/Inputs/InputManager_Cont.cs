@@ -104,6 +104,10 @@ public class InputManager_Cont : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(UIOverride == false) // inputs will be undetected if Override is active
+        {
+            CheckPhysMisc();
+        }
         MousePointer();
     }
 
@@ -125,11 +129,16 @@ public class InputManager_Cont : MonoBehaviour
         }
 
     }
-    private void CheckMisc()    // checks any miscellanious inputs short enough for just 1 functions
+
+    private void CheckPhysMisc()
     {
         //Checks Movement values
         moveValue = moveAction.ReadValue<Vector2>();    // checks movement values for the player
         MovePlayer(moveValue);  // calls movement script
+    }
+
+    private void CheckMisc()    // checks any miscellanious inputs short enough for just 1 functions
+    {
 
         if(EscapeAction.WasPressedThisFrame())  // checks if Escape has been selected (ESC Key)
         {

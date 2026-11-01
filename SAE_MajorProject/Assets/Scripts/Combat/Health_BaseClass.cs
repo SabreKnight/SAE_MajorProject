@@ -2,10 +2,11 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
-public class Health_BaseClass : MonoBehaviour, I_HitObject
+public class Health_BaseClass : MonoBehaviour, I_Dammageable
 {
     [SerializeField] protected float fullhealth = 10;
     [SerializeField] protected float health = 10;
+    [SerializeField] protected float KnockbackMult = 1f;
 
     [Header("Death")]
     public float DeathCoolDown = 2f;
@@ -44,9 +45,14 @@ public class Health_BaseClass : MonoBehaviour, I_HitObject
 
     public virtual void HitObjectMethod(Item weapon, float altmult, Vector3 hitDirection)
     {
-        Vector3 KnockbackDirection = (transform.position - hitDirection).normalized * weapon.KnockbackMult;
+        Damaged(weapon.attackStats, hitDirection);
+    }
 
-        transform.position += KnockbackDirection;
+    public void Damaged(AttackStats attackStats, Vector3 hitDirection)
+    {
+        Vector3 KnockbackDirection = (transform.position - hitDirection).normalized * attackStats.KnockbackMult;
+
+        transform.position += KnockbackDirection * KnockbackMult;
 
         if(invulBool == true)
         {
@@ -54,18 +60,10 @@ public class Health_BaseClass : MonoBehaviour, I_HitObject
             return;    
         }
 
-        Debug.Log("using: " + weapon + " in attack method");
-
-        float damage = weapon.damageStat * altmult;
-
-        if(Random.Range(0f, 1f) <= weapon.CritChance)
-        {
-            damage *= weapon.critMultiplier;
-        }
-        
-        Debug.Log(this.gameObject + " took: " + damage + " damage from: " + weapon.ItemName);
+        float DamageValue = attackStats.CalculateAttack(1f);
+        Debug.Log(this.gameObject + " took: " + DamageValue + " damage");
         StartCoroutine(InvulTimer());
-        HealthGetSet = damage * -1;
+        HealthGetSet =  DamageValue * -1;
     }
 
     protected virtual IEnumerator InvulTimer()

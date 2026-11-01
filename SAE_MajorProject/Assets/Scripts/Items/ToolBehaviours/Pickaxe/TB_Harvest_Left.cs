@@ -15,7 +15,7 @@ public class TB_Harvest_Left : ToolBehaviours_BaseClass
 
         //Debug.Log("hitmarker position: " + hitMarker);
 
-        hitArray = Physics2D.OverlapBoxAll(hitMarker, Vector2.one, 0f);
+        hitArray = Physics2D.OverlapBoxAll(hitMarker, tooltype.attackStats.AttackSize, 0f);
 
         if(hitArray.Length <= 0 || hitArray == null)
         {

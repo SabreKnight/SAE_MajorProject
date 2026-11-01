@@ -11,11 +11,7 @@ public class Item : ScriptableObject
 
     [Header("Tool and Weapons")]
     public GameObject ToolbehaviourManagerObject;
-    public float damageStat = 1;
-    public float CritChance = 0.2f;
-    public float critMultiplier = 2;
-    public float altmultiplier = 1;
-    public float KnockbackMult = 1;
+    public AttackStats attackStats;
 
     // scene object effector needed for tools
 

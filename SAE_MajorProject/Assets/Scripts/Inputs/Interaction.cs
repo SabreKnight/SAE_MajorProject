@@ -159,11 +159,13 @@ public class InteractionManager : MonoBehaviour    // attach to player object
                 if(behaviour.PrimaryAction)
                 {
                     leftToolbehaviour = behaviour;
+                    leftToolbehaviour.tooltype = newHeld;
                     Debug.Log("swapped primary tool behaviour to: " + behaviour);
                 }
                 else
                 {
                     rightToolbehaviour = behaviour;
+                    rightToolbehaviour.tooltype = newHeld;
                     Debug.Log("swapped Secondary tool behaviour to: " + behaviour);
                 }
             }

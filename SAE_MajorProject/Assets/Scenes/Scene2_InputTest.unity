@@ -445,7 +445,7 @@ MonoBehaviour:
   interactionScript: {fileID: 1332454916}
   UIManagerScript: {fileID: 0}
   UIOverride: 0
-  moveSpeed: 1
+  moveSpeed: 5
   PlayerObject: {fileID: 1332454912}
   moveValue: {x: 0, y: 0}
   sprintSpeed: 2
@@ -1108,7 +1108,11 @@ GameObject:
   - component: {fileID: 414711103}
   - component: {fileID: 414711102}
   - component: {fileID: 414711105}
-  m_Layer: 0
+  - component: {fileID: 414711107}
+  - component: {fileID: 414711106}
+  - component: {fileID: 414711108}
+  - component: {fileID: 414711109}
+  m_Layer: 3
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1129,6 +1133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullhealth: 10
   health: 10
+  KnockbackMult: 1
   DeathCoolDown: 1
   InvultimerCount: 0.2
   invulCurrentTime: 0
@@ -1249,6 +1254,79 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &414711106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414711101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12cf28ed73919c14eac6b91f7df6bd04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CheckRadius: 5
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  totalCount: 50
+  currentCount: 0
+--- !u!114 &414711107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414711101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b59a06f8dc7e43a4d825867e9714ebb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerObject: {fileID: 0}
+  CurrentStateEnum: 0
+  CurrentStateClass: {fileID: 0}
+  behaviourList:
+  - {fileID: 414711106}
+  - {fileID: 414711108}
+  - {fileID: 414711109}
+  isFixedUpdateState: 0
+  EnemyMovementSpeed: 0.25
+  attackStats:
+    damageStat: 1
+    CritChance: 0.2
+    critMultiplier: 2
+    altmultiplier: 1
+    KnockbackMult: 1
+    AttackRange: {x: 1, y: 1}
+    AttackSize: {x: 2, y: 2}
+--- !u!114 &414711108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414711101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c528f78d070a5f34393bfa7cb3a81207, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTrackThreshold: 2
+--- !u!114 &414711109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414711101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04298e7d82d68444ebc2bce5574a7198, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitRange: 1.5
 --- !u!1 &462191906
 GameObject:
   m_ObjectHideFlags: 0
@@ -2230,7 +2308,7 @@ GameObject:
   - component: {fileID: 957782662}
   - component: {fileID: 957782664}
   - component: {fileID: 957782665}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Tree Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2373,7 +2451,7 @@ GameObject:
   - component: {fileID: 1012650246}
   - component: {fileID: 1012650244}
   - component: {fileID: 1012650245}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Enemy (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2394,6 +2472,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullhealth: 10
   health: 10
+  KnockbackMult: 1
   DeathCoolDown: 1
   InvultimerCount: 0.2
   invulCurrentTime: 0
@@ -2684,7 +2763,7 @@ GameObject:
   - component: {fileID: 1057234327}
   - component: {fileID: 1057234325}
   - component: {fileID: 1057234326}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Enemy (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2705,6 +2784,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullhealth: 10
   health: 10
+  KnockbackMult: 1
   DeathCoolDown: 1
   InvultimerCount: 0.2
   invulCurrentTime: 0
@@ -3756,7 +3836,8 @@ GameObject:
   - component: {fileID: 1332454913}
   - component: {fileID: 1332454916}
   - component: {fileID: 1332454917}
-  m_Layer: 0
+  - component: {fileID: 1332454918}
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3854,7 +3935,7 @@ Transform:
   m_GameObject: {fileID: 1332454912}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.71, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3918,6 +3999,25 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 0
+--- !u!114 &1332454918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1332454912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a30acaef088807546be9072b03002315, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fullhealth: 10
+  health: 10
+  KnockbackMult: 1
+  DeathCoolDown: 2
+  InvultimerCount: 0.2
+  invulCurrentTime: 0
+  invulBool: 0
 --- !u!1001 &1335332522
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4643,7 +4743,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1705664877}
   - component: {fileID: 1705664876}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Hitmarker
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -3,12 +3,20 @@ using System.Collections;
 
 public interface I_HitObject
 {
-    public void HitObjectMethod(Item tool, Vector3 HitDirection)
+    public void HitObjectMethod(Item tool, Vector2 HitDirection)
     {
         
     }
 
     public void HitObjectMethod(Item tool, float altmult, Vector2 HitDirection)
+    {
+        
+    }
+}
+
+public interface I_Dammageable : I_HitObject
+{
+    public void Damaged(AttackStats attackStats, Vector2 HitDirection)
     {
         
     }
@@ -36,20 +44,20 @@ public interface I_InteractObject
     }
 }
 
-public abstract class BehaviourState_BaseClass
+public abstract class BehaviourState_BaseClass: MonoBehaviour
 {
     protected EnemyActionManager enemyActionManagerRef;
-    public void EnterBehaviourState(EnemyActionManager actionManager)
+    public virtual void EnterBehaviourState(EnemyActionManager actionManager)
     {
         enemyActionManagerRef = actionManager;
     }
 
-    public bool ActiveBehaviourState()
+    public virtual bool ActiveBehaviourState()
     {
         return true;
     }
 
-    public void ExitBehaviourState()
+    public virtual void ExitBehaviourState()
     {
         
     }

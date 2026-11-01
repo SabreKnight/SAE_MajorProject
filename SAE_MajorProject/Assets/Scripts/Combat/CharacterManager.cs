@@ -10,6 +10,7 @@ public class CharacterManager : MonoBehaviour, I_DeathManager
     private float playerCheckRadius = 10f;
     [SerializeField] private float CharacterSpawnOffset = 5;
     private float SpawnInterval = 4;
+    private GameObject Playerobj;
 
     private bool activeQueue = true;
 
