@@ -10,6 +10,7 @@ public class ProgressObject : MonoBehaviour, I_InteractObject
     [SerializeField] public QuotaClass currentQuota;
     [SerializeField] private int currentQuestindex = 0;
     private bool achievedQuota = false;
+    private bool FinishList = false;
 
     private void OnEnable()
     {
@@ -56,7 +57,6 @@ public class ProgressObject : MonoBehaviour, I_InteractObject
     {
         if(currentQuestindex >= ProgressQuotaList.Count)
         {
-            FinishQuotaList();   
             return; 
         }
 
@@ -101,11 +101,13 @@ public class ProgressObject : MonoBehaviour, I_InteractObject
     private void FinishQuotaList()
     {
         Debug.Log("Player has won the game");
+        
     }
 
     private void FinishCurrentQuota()
     {
         Debug.Log("Giving quota rewards");
+
         foreach(InstantiatedItem item in currentQuota.RewardItemList)
         {
             GameObject DropObject = new GameObject("Progression reward: " + item.itemType.ItemName, typeof(PickUpItem));
@@ -115,6 +117,11 @@ public class ProgressObject : MonoBehaviour, I_InteractObject
         
         currentQuota = null;
         currentQuestindex ++;
+
+        if(currentQuestindex >= ProgressQuotaList.Count)
+        {
+            FinishQuotaList();
+        }
     }
 
     public int DepositItem(InstantiatedItem item, int panelIndex)

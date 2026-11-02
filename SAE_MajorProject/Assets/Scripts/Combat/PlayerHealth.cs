@@ -36,7 +36,7 @@ public class PlayerHealth : Health_BaseClass
 
             if(value < 0)
             {
-                DamageEffect();    
+                StartCoroutine(DamageEffect());    
             }
 
             if(health <= 0f)
@@ -71,9 +71,16 @@ public class PlayerHealth : Health_BaseClass
 
     protected override IEnumerator DamageEffect()
     {
+        GameManager.Instance.audioManagerSingleton.PlayAudio("Hurt", true);
 
-        base.DamageEffect();
-        yield return null;
+        Debug.Log("Player has taken damage and is showing a damage effect");
+        if(spriteRenderer == null)
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        }
+        spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(0.2f);
+        spriteRenderer.color = BaseColour;
     }
 
     protected override void CharacterDeath()

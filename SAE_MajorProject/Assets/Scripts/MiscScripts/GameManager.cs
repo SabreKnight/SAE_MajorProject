@@ -5,8 +5,10 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     public InputManager_Cont inputController;
     public UIManager UIManagerSingleton;
+    public AudioManager audioManagerSingleton;
     public AnimationCurve DroppedItemAnimation;
     public GameObject Playerobj;
+    public SceneChanger sceneChanger;
 
     private void Awake()
     {
@@ -34,6 +36,16 @@ public class GameManager : MonoBehaviour
         if(UIManagerSingleton == null)
         {
             UIManagerSingleton = UIManager.FindFirstObjectByType<UIManager>();
+        }
+
+        if(audioManagerSingleton == null)
+        {
+            audioManagerSingleton = AudioManager.FindFirstObjectByType<AudioManager>();
+        }
+
+        if(sceneChanger == null)
+        {
+            sceneChanger = SceneChanger.FindFirstObjectByType<SceneChanger>();
         }
     }
 }

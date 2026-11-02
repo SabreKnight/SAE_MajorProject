@@ -6,7 +6,7 @@ using UnityEngine;
 public class Health_BaseClass : MonoBehaviour, I_Dammageable, I_HitObject
 {
     [SerializeField] protected SpriteRenderer spriteRenderer;
-    [SerializeField] protected Color BaseColour;
+    [SerializeField] protected Color BaseColour = new Color(1f, 1f, 1f, 1f);
     [SerializeField] protected float fullhealth = 10;
     [SerializeField] protected float health = 10;
     [SerializeField] protected float KnockbackMult = 1f;
@@ -43,6 +43,11 @@ public class Health_BaseClass : MonoBehaviour, I_Dammageable, I_HitObject
 
             Mathf.Clamp(health, 0f, fullhealth);
 
+            if(value < 0)
+            {
+                StartCoroutine(DamageEffect());    
+            }
+
             if(health <= 0f)
             {
                 health = fullhealth;
@@ -51,19 +56,13 @@ public class Health_BaseClass : MonoBehaviour, I_Dammageable, I_HitObject
         }
     }
 
-    public virtual void HitObjectMethod(Item Weapon, Vector3 hitDirection)
+    public void HitObjectMethod(Item Weapon, Vector3 hitDirection)
     {
         Debug.Log("attempting to hit using tool");
         Damaged(Weapon.attackStats, hitDirection);
     }
 
-    public virtual void HitObjectMethod(Item weapon, float altmult, Vector3 hitDirection)
-    {
-        Debug.Log("attempting to hit using tool");
-        Damaged(weapon.attackStats, hitDirection);
-    }
-
-    public virtual void Damaged(AttackStats attackStats, Vector3 hitDirection)
+    public void Damaged(AttackStats attackStats, Vector3 hitDirection)
     {
         Vector3 KnockbackDirection = (transform.position - hitDirection).normalized * attackStats.KnockbackMult;
 
@@ -74,6 +73,7 @@ public class Health_BaseClass : MonoBehaviour, I_Dammageable, I_HitObject
             Debug.Log("Invulnerability is currently active on: " + this);
             return;    
         }
+        
 
         float DamageValue = attackStats.CalculateAttack(1f);
         Debug.Log(this.gameObject + " took: " + DamageValue + " damage");
@@ -83,6 +83,11 @@ public class Health_BaseClass : MonoBehaviour, I_Dammageable, I_HitObject
 
     protected virtual IEnumerator DamageEffect()
     {
+
+        if(spriteRenderer == null)
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        }
         spriteRenderer.color = Color.red;
         yield return new WaitForSeconds(0.2f);
         spriteRenderer.color = BaseColour;

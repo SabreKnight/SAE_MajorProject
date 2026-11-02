@@ -9,6 +9,7 @@ public class InteractionManager : MonoBehaviour    // attach to player object
     public Vector2 hitMarkerPosition;
     [SerializeField] private Grid grid;
     [SerializeField] public InventoryManager inventory;
+    [SerializeField] public PlayerHealth playerHealth;
 
     [Header("Tool behaviours")]
     public Item helditem;
@@ -19,6 +20,13 @@ public class InteractionManager : MonoBehaviour    // attach to player object
 
     private Vector3 markerOffset = new Vector3(0.5f, 0.5f, 0);
 
+    public void Start()
+    {
+        if(playerHealth == null)
+        {
+            playerHealth = GetComponent<PlayerHealth>();
+        }
+    }
     public void LeftClick()
     {
         if(helditem == null || ToolBehaviourManagerObject == null)  // checks if there is an object and tool behaviour to use
@@ -53,6 +61,7 @@ public class InteractionManager : MonoBehaviour    // attach to player object
 
     public void UseTools(List<I_HitObject> hitarray)
     {
+        bool hitSuccess = false;
         if(hitarray == null )
         {
             Debug.Log("No hittable objects found in array");    
@@ -61,19 +70,25 @@ public class InteractionManager : MonoBehaviour    // attach to player object
         for (int i = 0; i < hitarray.Count; i++)
         {
             //Debug.Log();
-            I_HitObject hit = hitarray[i] as I_HitObject;
+            I_HitObject hit = hitarray[i];
             if(hit != null)
             {
-                Debug.Log("using: " + helditem + " to hit: "  + hit);
-
-                if(hit is Health_BaseClass healthclass)
-                {
-                    healthclass.Damaged(helditem.attackStats, transform.position);
-                    return;
-                }
-
-                hit.HitObjectMethod(helditem, transform.position);
                 
+                    Debug.Log("using: " + helditem + " to hit: "  + hit);
+
+                    if(hit is Health_BaseClass healthclass)
+                    {
+                        healthclass.Damaged(helditem.attackStats, transform.position);
+                        
+                    }
+                    else if(hit is HarvestObjects harvestObject)
+                    {
+                        
+                        harvestObject.HitObjectMethod(helditem, transform.position);
+                    }
+                    
+                    GameManager.Instance.audioManagerSingleton.PlayAudio("Hit", true);
+                    hitSuccess = true;
                 
             }
             else
@@ -81,6 +96,12 @@ public class InteractionManager : MonoBehaviour    // attach to player object
                 Debug.Log("No hittable object reference to use tool on: " + hitarray[i]);
             }
         }
+
+        if(hitSuccess != true)
+        {
+            GameManager.Instance.audioManagerSingleton.PlayAudio("Whoosh", true);
+        }
+        
     }
 
     public void UseWeapon(List<I_HitObject> hitarray)
@@ -94,19 +115,28 @@ public class InteractionManager : MonoBehaviour    // attach to player object
         {
             //Debug.Log();
             I_HitObject hit = hitarray[i] as I_HitObject;
-            if(hit is I_Dammageable hitdamage)
+    
+            if(hit is PlayerHealth == playerHealth)
             {
-                if(hit != null)
+                Debug.Log("cannot hit self");
+            }
+            else
+            {
+                if(hit is I_Dammageable hitdamage)
                 {
-                    
-                    Debug.Log("using: " + helditem + " to hit: "  + hit);
-                    hitdamage.Damaged(helditem.attackStats, transform.position);
-                    
-                }
-                else
-                {
-                    Debug.Log("No hittable object reference to use tool on: " + hitarray[i]);
-                }
+                    if(hit != null)
+                    {
+                        
+                        Debug.Log("using: " + helditem + " to hit: "  + hit);
+                        hitdamage.Damaged(helditem.attackStats, transform.position);
+                        
+                    }
+                    else
+                    {
+                        Debug.Log("No hittable object reference to use tool on: " + hitarray[i]);
+                    }
+                
+            }
             }
         }
     }

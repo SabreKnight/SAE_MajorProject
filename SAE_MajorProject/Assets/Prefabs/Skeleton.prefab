@@ -108,6 +108,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a30acaef088807546be9072b03002315, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 8271066292580730457}
+  BaseColour: {r: 1, g: 1, b: 1, a: 1}
   fullhealth: 10
   health: 10
   KnockbackMult: 1
@@ -133,7 +135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigidbody2DRef: {fileID: 2174374980123931398}
   playerObject: {fileID: 0}
-  CurrentStateEnum: 0
+  CurrentStateEnum: 3
   CurrentStateClass: {fileID: 0}
   behaviourList:
   - {fileID: 9220171234327556477}

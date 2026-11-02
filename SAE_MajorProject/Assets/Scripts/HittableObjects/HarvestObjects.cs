@@ -11,7 +11,6 @@ public class HarvestObjects : MonoBehaviour, I_HitObject
     [SerializeField] private int baseDropAmount = 15;
     [SerializeField] private int randDropVariation = 5;
     
-
     public void HitObjectMethod(Item tool, Vector3 HitDirection)
     {
         Debug.Log("using: " + tool + " in harvest method");
