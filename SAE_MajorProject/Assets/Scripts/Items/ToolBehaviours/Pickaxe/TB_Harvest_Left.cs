@@ -30,10 +30,10 @@ public class TB_Harvest_Left : ToolBehaviours_BaseClass
         foreach(Collider2D hit in hitArray)
         {
             
-            if(hit.gameObject.TryGetComponent<I_HitObject>(out I_HitObject hitObj) && hit != null)
+            if(hit.gameObject.TryGetComponent<I_HitObject>(out I_HitObject hitObj)&& hit != null)
             {
-                hitobjectArray.Add(hitObj);
-                Debug.Log("Added: " + hitObj + " to list of hit objects");
+                hitobjectArray.Add(hitObj as I_HitObject);
+                Debug.Log("Added: " + hitObj + " to list of hit objects: " + hit);
                 continue;
             }
         }

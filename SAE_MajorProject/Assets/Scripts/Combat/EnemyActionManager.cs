@@ -21,7 +21,11 @@ public class EnemyActionManager : MonoBehaviour
 
     void OnEnable()
     {
-        ChangeState(0);
+        if(spriteRenderer == null)
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        }
+        ChangeState(3);
         
         if(CharacterHealth == null)
         {
@@ -83,11 +87,17 @@ public class EnemyActionManager : MonoBehaviour
                 ChangeState(1);
                 break;        
             }
+
+            case BehaviourState.DeathState:
+            {
+                ChangeState(0);
+                break;
+            }
         }
     }
 
 #region Change State
-    protected void ChangeState(BehaviourState_BaseClass newState)
+    public void ChangeState(BehaviourState_BaseClass newState)
     {
         if(CurrentStateClass != null)
         {
@@ -100,14 +110,14 @@ public class EnemyActionManager : MonoBehaviour
         CurrentStateClass.EnterBehaviourState(this);
     }
 
-    protected void ChangeState(int behaviourIndex)
+    public void ChangeState(int behaviourIndex)
     {
         if(CurrentStateClass != null)
         {
             CurrentStateClass.ExitBehaviourState();
         }
         
-        Debug.Log("changing state from " + CurrentStateClass + " to " + behaviourList[behaviourIndex]);
+        //Debug.Log("changing state from " + CurrentStateClass + " to " + behaviourList[behaviourIndex]);
 
         CurrentStateClass = behaviourList[behaviourIndex];
         CurrentStateClass.EnterBehaviourState(this);
@@ -140,5 +150,6 @@ public enum BehaviourState
     TrackingPlayer = 0,
     FindPlayer = 1,
     SwipeAttack = 2,
+    DeathState = 3
 
 };

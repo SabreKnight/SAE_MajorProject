@@ -56,19 +56,19 @@ public class SwipePlayer : BehaviourState_BaseClass
 
         foreach(Collider2D hit in attackColliders)
         {
-            Debug.Log("attempting to hit: " + hit.gameObject + " at : " + (transform.position + hitvector));
+            Debug.Log("attempting to hit: " + hit.gameObject);
 
             Health_BaseClass hitObj = hit.gameObject.GetComponent<Health_BaseClass>();
             Debug.Log(" hit gives " + hitObj);
 
             if(hitObj != null && hit != null && hit.gameObject.CompareTag("Player"))
             {
-                Debug.Log("Found dammageable to attack" + hitObj);
+                //Debug.Log("Found dammageable to attack" + hitObj);
                 hitObj.Damaged(enemyActionManagerRef.attackStats, transform.position);
             }
             else
             {
-                Debug.Log("hit object could not be found:" + hitObj);
+                //Debug.Log("hit object could not be found:" + hitObj);
             }
 
         }

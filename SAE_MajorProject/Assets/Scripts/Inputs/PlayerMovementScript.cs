@@ -20,21 +20,21 @@ public class PlayerMovementScript : MonoBehaviour
 
     public void MovePlayer(Vector2 moveDirection, float SprintValue)
     {
+        animator.SetFloat("Speed", Mathf.Abs(moveDirection.x) + Mathf.Abs(moveDirection.y));
         if(moveDirection == Vector2.zero)
         {
             rigidbodyRef.linearVelocity = Vector2.zero;
             return;    
         }
-
-        Debug.Log("Moving player: " + moveDirection);
+        
+        SetFlip(moveDirection);
+        //Debug.Log("Moving player: " + moveDirection);
         rigidbodyRef.MovePosition((Vector2)transform.position + (moveDirection * SprintValue * movementSpeed));
-        SetAnimations(moveDirection);
 
     }
 
-    private void SetAnimations(Vector2 moveDirection)
+    private void SetFlip(Vector2 moveDirection)
     {
-        animator.SetFloat("Speed", Mathf.Abs(moveDirection.x) + Mathf.Abs(moveDirection.y));
         bool tempbool = flipbool;
         if(moveDirection.x < 0 )
         {

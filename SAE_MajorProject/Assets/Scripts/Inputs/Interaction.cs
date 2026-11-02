@@ -35,12 +35,20 @@ public class InteractionManager : MonoBehaviour    // attach to player object
                 UseTools(hitMarkerOutputArray);
                 return;
             }
+            case UseType.Weapon:
+            {
+                hitMarkerOutputArray = leftToolbehaviour.ToolClickMethod(hitMarkerPosition);
+                UseWeapon(hitMarkerOutputArray);
+                return;
+            }
             default:
             {
                 Debug.Log("No specified item has been selected");
                 return;
             }
         }
+
+
     }
 
     public void UseTools(List<I_HitObject> hitarray)
@@ -53,15 +61,52 @@ public class InteractionManager : MonoBehaviour    // attach to player object
         for (int i = 0; i < hitarray.Count; i++)
         {
             //Debug.Log();
-            I_HitObject hit = hitarray[i];
+            I_HitObject hit = hitarray[i] as I_HitObject;
             if(hit != null)
             {
                 Debug.Log("using: " + helditem + " to hit: "  + hit);
+
+                if(hit is Health_BaseClass healthclass)
+                {
+                    healthclass.Damaged(helditem.attackStats, transform.position);
+                    return;
+                }
+
                 hit.HitObjectMethod(helditem, transform.position);
+                
+                
             }
             else
             {
                 Debug.Log("No hittable object reference to use tool on: " + hitarray[i]);
+            }
+        }
+    }
+
+    public void UseWeapon(List<I_HitObject> hitarray)
+    {
+        if(hitarray == null )
+        {
+            Debug.Log("No hittable objects found in array");    
+        }
+
+        for (int i = 0; i < hitarray.Count; i++)
+        {
+            //Debug.Log();
+            I_HitObject hit = hitarray[i] as I_HitObject;
+            if(hit is I_Dammageable hitdamage)
+            {
+                if(hit != null)
+                {
+                    
+                    Debug.Log("using: " + helditem + " to hit: "  + hit);
+                    hitdamage.Damaged(helditem.attackStats, transform.position);
+                    
+                }
+                else
+                {
+                    Debug.Log("No hittable object reference to use tool on: " + hitarray[i]);
+                }
             }
         }
     }

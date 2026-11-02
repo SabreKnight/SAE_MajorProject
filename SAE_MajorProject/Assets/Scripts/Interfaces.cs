@@ -24,9 +24,9 @@ public interface I_Dammageable : I_HitObject
 
 public interface I_DeathManager
 {
-    public IEnumerator CharacterDied(Health_BaseClass characterHealth)
+    public void CharacterDied(Health_BaseClass characterHealth)
     {
-        yield return null;
+        
     }
 }
 

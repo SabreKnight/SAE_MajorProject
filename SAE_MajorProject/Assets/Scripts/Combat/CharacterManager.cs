@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CharacterManager : MonoBehaviour, I_DeathManager
@@ -15,14 +16,20 @@ public class CharacterManager : MonoBehaviour, I_DeathManager
 
     private bool activeQueue = true;
 
-    public IEnumerator CharacterDied(Health_BaseClass characterHealth)
+    public void CharacterDied(Health_BaseClass characterHealth)
+    {
+        
+        StartCoroutine(CharacterDeath(characterHealth));
+    }
+
+    private IEnumerator CharacterDeath(Health_BaseClass characterHealth)
     {
         Debug.Log(characterHealth.gameObject + " Has started death cooldown");
         float cooldown = characterHealth.DeathCoolDown;
-        yield return new WaitForSeconds(1f);
+        characterHealth.enemyActionManager.ChangeState(3);
+        yield return new WaitForSeconds(10f);
         CharacterQueue.Add(characterHealth);
         Debug.Log(characterHealth.gameObject + " Has entered the spawn pool");
-        //yield return null;
     }
 
     private IEnumerator SpawnCharacter()
@@ -43,7 +50,7 @@ public class CharacterManager : MonoBehaviour, I_DeathManager
         foreach(Health_BaseClass character in CharacterQueue)
         {
             character.charManagerRef = this as I_DeathManager;
-            character.GetComponent<SpriteRenderer>().enabled = false;
+            character.enemyActionManager.ChangeState(3);
             Debug.Log(character.gameObject + " has been initialised in character manager");
         }
         activeQueue = false;

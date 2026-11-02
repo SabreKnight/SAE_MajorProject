@@ -31,13 +31,13 @@ public class TrackPlayer_EB : BehaviourState_BaseClass
         
         if(playerDistance <= playerTrackThreshold)
         {
-            Debug.Log("Player is within range");
+            //Debug.Log("Player is within range");
             if(enemyActionManagerRef.completedWait == true)
             {
                 return false;
             }
 
-            Debug.Log("attack cooldown has not completed yet");
+            //Debug.Log("attack cooldown has not completed yet");
             return true;
         }
         else
@@ -45,7 +45,7 @@ public class TrackPlayer_EB : BehaviourState_BaseClass
 
             Vector2 EnemyApproach = (Vector2)(playerobject.transform.position - transform.position).normalized * enemyActionManagerRef.EnemyMovementSpeed;
             rigidRef.MovePosition((Vector2)transform.position + EnemyApproach);
-            Debug.Log("Enemy has moved towards: " + EnemyApproach);
+            //Debug.Log("Enemy has moved towards: " + EnemyApproach);
             return true;
         }
         

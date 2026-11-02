@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02e89a3c09fcbf042a8b605b55810a22, type: 3}
+  m_Name: Bones
+  m_EditorClassIdentifier: 
+  ItemName: Bones
+  type: 0
+  inventorySprite: {fileID: 1239848303869001434, guid: 3e8a64e46d2d82946a97bc82378cf640, type: 3}
+  stackSizeLimit: 50
+  ToolbehaviourManagerObject: {fileID: 0}
+  attackStats:
+    damageStat: 1
+    CritChance: 0.2
+    critMultiplier: 2
+    altmultiplier: 1
+    KnockbackMult: 1
+    AttackRange: {x: 1, y: 1}
+    AttackSize: {x: 1, y: 1}
