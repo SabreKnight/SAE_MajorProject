@@ -12,6 +12,7 @@ public class SwipePlayer : BehaviourState_BaseClass
     private float totalWindupTime = 2;
     private float currentWindUpTime;
     private Vector2 AttackSize = Vector2.one;
+    private Vector3 playerlocation;
 
     [SerializeField] private float hitRange = 1f;
 
@@ -34,6 +35,7 @@ public class SwipePlayer : BehaviourState_BaseClass
 
     private IEnumerator SwipeMethod()
     {
+        playerlocation = playerobject.transform.position;
         Debug.Log("Starting swipe attack method");
         currentWindUpTime = 0f;
         while(currentWindUpTime < totalWindupTime)
@@ -48,7 +50,8 @@ public class SwipePlayer : BehaviourState_BaseClass
 
     private void AttackEnemy()
     {
-        Vector3 hitvector = (playerobject.transform.position - transform.position).normalized * hitRange;
+        enemyActionManagerRef.animator.SetTrigger("slashing");
+        Vector3 hitvector = (playerlocation - transform.position).normalized * hitRange;
         Collider2D[] attackColliders = Physics2D.OverlapBoxAll((Vector2)(transform.position + hitvector), enemyActionManagerRef.attackStats.AttackSize, 0f);
 
         foreach(Collider2D hit in attackColliders)

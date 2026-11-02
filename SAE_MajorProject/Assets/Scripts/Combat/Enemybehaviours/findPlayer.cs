@@ -48,6 +48,6 @@ public class FindPlayer_EB : BehaviourState_BaseClass
 
     public override void ExitBehaviourState()
     {
-        
+        enemyActionManagerRef.animator.SetBool("Active", true);
     }
 }

@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
     public InputManager_Cont inputController;
     public UIManager UIManagerSingleton;
     public AnimationCurve DroppedItemAnimation;
+    public GameObject Playerobj;
 
     private void Awake()
     {

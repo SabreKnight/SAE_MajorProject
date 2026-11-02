@@ -6,6 +6,7 @@ public class TrackPlayer_EB : BehaviourState_BaseClass
     private GameObject playerobject;
     [SerializeField] private float playerTrackThreshold;
     private Rigidbody2D rigidRef;
+    private bool flipbool;
     public override void EnterBehaviourState(EnemyActionManager actionManager)
     {
         enemyActionManagerRef = actionManager;
@@ -19,12 +20,14 @@ public class TrackPlayer_EB : BehaviourState_BaseClass
     public override bool ActiveBehaviourState()
     {
         return TrackPlayermethod();
-    
     }
 
     private bool TrackPlayermethod()
     {
         float playerDistance = Vector2.Distance(playerobject.transform.position, transform.position);
+        enemyActionManagerRef.animator.SetFloat("Distance", playerDistance / playerTrackThreshold);
+
+        CheckFlip(playerobject.transform.position - transform.position);
         
         if(playerDistance <= playerTrackThreshold)
         {
@@ -46,6 +49,24 @@ public class TrackPlayer_EB : BehaviourState_BaseClass
             return true;
         }
         
+    }
+
+    private void CheckFlip(Vector3 moveDirection)
+    {
+        bool tempbool = flipbool;
+        if(moveDirection.x < 0 )
+        {
+            flipbool = true;
+        }
+        else
+        {
+            flipbool = false;
+        }
+
+        if(tempbool != flipbool)
+        {
+            enemyActionManagerRef.spriteRenderer.flipX = flipbool;
+        }
     }
 
     public override void ExitBehaviourState()

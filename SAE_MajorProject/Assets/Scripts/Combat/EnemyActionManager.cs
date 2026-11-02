@@ -13,6 +13,9 @@ public class EnemyActionManager : MonoBehaviour
     [SerializeField] protected List<BehaviourState_BaseClass> behaviourList;
     public bool isFixedUpdateState = false;
     public float EnemyMovementSpeed;
+    
+    public Animator animator;
+    public SpriteRenderer spriteRenderer;
 
     public AttackStats attackStats;
 
@@ -117,6 +120,7 @@ public class EnemyActionManager : MonoBehaviour
 
     public IEnumerator WaitMethod()
     {
+        
         completedWait = false;
         Debug.Log("Starting cooldown attack method");
         CurrentWaitTime = 0f;
