@@ -1,11 +1,12 @@
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
+using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class EnemyActionManager : MonoBehaviour
 {
     protected Health_BaseClass CharacterHealth;
+    public Rigidbody2D rigidbody2DRef;
     public GameObject playerObject;
     public BehaviourState CurrentStateEnum;
     [SerializeField] protected BehaviourState_BaseClass CurrentStateClass;
@@ -22,6 +23,11 @@ public class EnemyActionManager : MonoBehaviour
         if(CharacterHealth == null)
         {
             CharacterHealth = this.gameObject.GetComponent<Health_BaseClass>();
+        }
+
+        if(rigidbody2DRef == null)
+        {
+            rigidbody2DRef = GetComponent<Rigidbody2D>();
         }
     }
 
@@ -56,6 +62,7 @@ public class EnemyActionManager : MonoBehaviour
         {
             case BehaviourState.FindPlayer:
             {
+                completedWait = true;
                 ChangeState(1);
                 break;
             }
@@ -70,15 +77,8 @@ public class EnemyActionManager : MonoBehaviour
             case BehaviourState.SwipeAttack:
             {
                 Debug.Log("Enemy has completed attack");
-                ChangeState(3);
-                break;        
-            }
-
-            case BehaviourState.Cooldown:
-            {
-                Debug.Log("Enemy has finished cooldown");
                 ChangeState(1);
-                break;
+                break;        
             }
         }
     }
@@ -111,6 +111,23 @@ public class EnemyActionManager : MonoBehaviour
 
     }
 #endregion
+    public bool completedWait = true;
+    private float CurrentWaitTime = 0f;
+    [SerializeField] private float TotalWaitTime = 3f;
+
+    public IEnumerator WaitMethod()
+    {
+        completedWait = false;
+        Debug.Log("Starting cooldown attack method");
+        CurrentWaitTime = 0f;
+        while(CurrentWaitTime < TotalWaitTime)
+        {
+            yield return new WaitForSeconds(0.1f);
+            CurrentWaitTime += 0.1f;    
+        }
+        completedWait = true;
+        yield return null;
+    }
 
 }
 
@@ -119,6 +136,5 @@ public enum BehaviourState
     TrackingPlayer = 0,
     FindPlayer = 1,
     SwipeAttack = 2,
-    Cooldown = 3
 
 };

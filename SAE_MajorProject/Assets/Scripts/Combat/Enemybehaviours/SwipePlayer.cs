@@ -58,7 +58,7 @@ public class SwipePlayer : BehaviourState_BaseClass
             Health_BaseClass hitObj = hit.gameObject.GetComponent<Health_BaseClass>();
             Debug.Log(" hit gives " + hitObj);
 
-            if(hitObj != null && hit != null && hit.gameObject != this.gameObject)
+            if(hitObj != null && hit != null && hit.gameObject.CompareTag("Player"))
             {
                 Debug.Log("Found dammageable to attack" + hitObj);
                 hitObj.Damaged(enemyActionManagerRef.attackStats, transform.position);
@@ -76,6 +76,6 @@ public class SwipePlayer : BehaviourState_BaseClass
 
     public override void ExitBehaviourState()
     {
-        
+        StartCoroutine(enemyActionManagerRef.WaitMethod());
     }
 }

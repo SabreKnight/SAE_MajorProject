@@ -36,6 +36,8 @@ public class UIManager : MonoBehaviour
         InventoryPanelObject.SetActive(false);
         HotPanelObject.SetActive(false);
         InteractPanelObject.SetActive(false);
+        MenuPanelObject.SetActive(false);
+        OpenMenuBool = false;
 
         for(int i = 0; i < UI_InventoryPanels.Count; i++)
         {
@@ -206,10 +208,16 @@ public class UIManager : MonoBehaviour
     {
         if(!OpenMenuBool)
         {
+            Debug.Log("Menu openned");
+            MenuPanelObject.SetActive(true);
+            OpenMenuBool = true;
             return true;
         }
         else
         {
+            Debug.Log("Menu closed");
+            MenuPanelObject.SetActive(false);
+            OpenMenuBool = false;
             return false;
         }
     }

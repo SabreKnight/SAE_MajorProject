@@ -6,9 +6,30 @@ using UnityEngine.UI;
 public class InputManager_Cont : MonoBehaviour
 {
     public InputActionAsset InputAction;
+    public PlayerMovementScript playerMovementScript;
     public InteractionManager interactionScript;
     [SerializeField] private UIManager UIManagerScript;
-    [HideInInspector] public bool UIOverride = false;
+    private bool UIOverride = false;
+
+    public bool OverrideGetSet  // this will pause the game while menus are open
+    {
+        get
+        {
+            return UIOverride;
+        }
+        set
+        {
+            UIOverride = value;
+            if(value == true)
+            {
+                Time.timeScale = 0f;
+            }
+            else
+            {
+                Time.timeScale = 1f;
+            }
+        }
+    }
 
 # region Movement Inputs
     private InputAction moveAction;
@@ -86,14 +107,14 @@ public class InputManager_Cont : MonoBehaviour
     void SetupPanels()
     {
         UIManagerScript.SetUpPanel();
-        UIOverride = false;
+        OverrideGetSet = false;
     }
 
     private void Update()
     {
         InventoryToggle();
 
-        if(UIOverride == false) // inputs will be undetected if Override is active
+        if(OverrideGetSet == false) // inputs will be undetected if Override is active
         {
             CheckMisc();
             CheckLeftMouseInput();
@@ -104,7 +125,7 @@ public class InputManager_Cont : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(UIOverride == false) // inputs will be undetected if Override is active
+        if(OverrideGetSet == false) // inputs will be undetected if Override is active
         {
             CheckPhysMisc();
         }
@@ -125,7 +146,7 @@ public class InputManager_Cont : MonoBehaviour
 
         if(InteractAction.WasPressedThisFrame())    // checks interact button (E Key)
         {
-            UIOverride = interactionScript.InteractkeyMethod();
+            OverrideGetSet = interactionScript.InteractkeyMethod();
         }
 
         if(EscapeAction.WasPressedThisFrame())  // checks if Escape has been selected (ESC Key)
@@ -232,7 +253,8 @@ public class InputManager_Cont : MonoBehaviour
 
     private void MovePlayer(Vector2 moveValue) // move to model and view class
     {
-        PlayerObject.transform.position += (Vector3)(moveValue * CheckSprint() * 0.01f );
+        //PlayerObject.transform.position += (Vector3)(moveValue * CheckSprint() * 0.01f );
+        playerMovementScript.MovePlayer(moveValue, CheckSprint());
         if(moveValue != Vector2.zero)
         {
             TrueLookdirection = moveValue;
@@ -253,12 +275,12 @@ public class InputManager_Cont : MonoBehaviour
 
     public void UITabButton()
     {
-        UIOverride = UIManagerScript.InventoryinputButton();
+        OverrideGetSet = UIManagerScript.InventoryinputButton();
     }
 
     public void UIEscButton()
     {
-        UIOverride = UIManagerScript.OpenEscMenu();
+        OverrideGetSet = UIManagerScript.OpenEscMenu();
     }
 
 
