@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class SceneChanger : MonoBehaviour
 {
     private string WebpageURL = "https://forms.gle/wDJByGH88dzX3REg9";
-    public async Task ChangeScene(string SceneName)
+    public void ChangeScene(string SceneName)
     {
         string sceneName = SceneManager.GetActiveScene().name;
         Debug.Log("current scene is: " + sceneName);

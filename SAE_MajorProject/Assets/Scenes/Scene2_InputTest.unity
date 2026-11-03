@@ -1346,10 +1346,10 @@ MonoBehaviour:
   playerMovementScript: {fileID: 1332454919}
   interactionScript: {fileID: 1332454916}
   UIManagerScript: {fileID: 0}
-  moveSpeed: 5
+  moveSpeed: 3
   PlayerObject: {fileID: 1332454912}
   moveValue: {x: 0, y: 0}
-  sprintSpeed: 2
+  sprintSpeed: 1.2
   scrollValue: 0
   Mouseposition: {x: 0, y: 0}
   MouseDirection: {x: 0, y: 0}
@@ -178841,7 +178841,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2089956751
 RectTransform:
   m_ObjectHideFlags: 0
