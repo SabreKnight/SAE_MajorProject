@@ -91,6 +91,7 @@ public class PlayerHealth : Health_BaseClass
         }
         Debug.Log(this.gameObject + " character has died, sending to death manager: ");
 
+        AnalyticsManager.Instance.DeathEvent((Vector2)transform.position);
         charManagerRef.CharacterDied(this);
     }
 

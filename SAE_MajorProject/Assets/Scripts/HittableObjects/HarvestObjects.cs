@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
@@ -6,16 +7,19 @@ public class HarvestObjects : MonoBehaviour, I_HitObject
 {
     
     [SerializeField] private float hitPoints = 10;
+    [SerializeField] private float maxhitPoints = 10;
     [SerializeField] private Item effectorTool;
     [SerializeField] private Item itemDrop;
     [SerializeField] private int baseDropAmount = 15;
     [SerializeField] private int randDropVariation = 5;
+    [SerializeField] private float RegenTime = 30f;
+    private bool regenerating = false;
     
     public void HitObjectMethod(Item tool, Vector3 HitDirection)
     {
         Debug.Log("using: " + tool + " in harvest method");
 
-        if(tool != effectorTool)
+        if(tool != effectorTool || regenerating == true)
         {
             Debug.Log("object hit with wrong tool");
             return;
@@ -48,7 +52,23 @@ public class HarvestObjects : MonoBehaviour, I_HitObject
 
         Debug.Log(this.gameObject + " was harvested and dropped: " + dropAmount + " of " + itemDrop.ItemName);
 
-        this.gameObject.SetActive(false);
+        AnalyticsManager.Instance.harvestCount ++;
+        StartCoroutine(RegenerationMethod());
+    }
+
+    private IEnumerator RegenerationMethod()
+    {
+        Collider2D coll = GetComponent<Collider2D>();
+        coll.enabled = false;
+
+        SpriteRenderer SR = GetComponent<SpriteRenderer>();
+        SR.enabled = false;
+
+        yield return new WaitForSeconds(RegenTime);
+
+        coll.enabled = true;
+        SR.enabled = true;
+        hitPoints = maxhitPoints;
     }
 
 }

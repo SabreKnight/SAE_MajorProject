@@ -48,6 +48,7 @@ IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IDropHan
 
         if(panelType == PanelType.ProgressPanel)
         {
+            outlinePanel.color = Color.black;
             StackSizeText.text = instantiatedItem.currentStackSize.ToString() + "/" + instantiatedItem.quotaCount;
 
             if(instantiatedItem.currentStackSize >= instantiatedItem.quotaCount)

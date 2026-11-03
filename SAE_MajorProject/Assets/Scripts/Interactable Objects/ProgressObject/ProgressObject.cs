@@ -57,6 +57,7 @@ public class ProgressObject : MonoBehaviour, I_InteractObject
     {
         if(currentQuestindex >= ProgressQuotaList.Count)
         {
+            FinishQuotaList();
             return; 
         }
 
@@ -101,7 +102,7 @@ public class ProgressObject : MonoBehaviour, I_InteractObject
     private void FinishQuotaList()
     {
         Debug.Log("Player has won the game");
-        
+        GameManager.Instance.sceneChanger.ChangeScene(2);
     }
 
     private void FinishCurrentQuota()
@@ -115,6 +116,7 @@ public class ProgressObject : MonoBehaviour, I_InteractObject
             DropObject.GetComponent<PickUpItem>().SetupObject(item , dropDirection, transform.position);
         }
         
+        AnalyticsManager.Instance.MileStoneCompletionEvent(currentQuestindex);
         currentQuota = null;
         currentQuestindex ++;
 

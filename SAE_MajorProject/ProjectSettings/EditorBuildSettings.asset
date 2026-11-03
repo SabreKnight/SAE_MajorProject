@@ -14,6 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Scene2_InputTest.unity
     guid: a586d34b56642754680458060983f209
+  - enabled: 1
+    path: Assets/Scenes/Scene4_Victory.unity
+    guid: 9fe61833b23ee7a4d94b697637fe3dae
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: a7289340131cde3449aebae346dd9774, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

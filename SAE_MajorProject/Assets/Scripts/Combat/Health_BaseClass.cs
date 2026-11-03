@@ -123,6 +123,8 @@ public class Health_BaseClass : MonoBehaviour, I_Dammageable, I_HitObject
             enemyActionManager.ChangeState(3);    
         }
 
+        AnalyticsManager.Instance.KillCount ++;
+
         charManagerRef.CharacterDied(this);
     }
 

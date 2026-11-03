@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class CharacterManager : MonoBehaviour, I_DeathManager
 {
-    private int managerCount = 3;
-    private int ActiveCharacterCount = 2;
+    [SerializeField] private int managerCount = 3;
+    [SerializeField] private int ActiveCharacterCount = 2;
     [SerializeField] private List<Health_BaseClass> CharacterQueue;
     
     private float playerCheckRadius = 10f;

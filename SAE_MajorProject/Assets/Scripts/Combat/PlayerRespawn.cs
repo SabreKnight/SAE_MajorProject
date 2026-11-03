@@ -14,13 +14,14 @@ public class PlayerRespawn : MonoBehaviour, I_DeathManager
     private void Characterdeath()
     {
         RespawnUI.SetActive(true);
-        //GameManager.Instance.inputController.OverrideGetSet = true;
+        GameManager.Instance.inputController.OverrideGetSet = true;
+
     }
 
     public void RespawnButton()
     {
         RespawnUI.SetActive(false);
-        //GameManager.Instance.inputController.OverrideGetSet = false;
+        GameManager.Instance.inputController.OverrideGetSet = false;
         playerhealth.CharacterSpawn(this);
     }
 
