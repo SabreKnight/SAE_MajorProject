@@ -1,11 +1,12 @@
 using System.Runtime.CompilerServices;
+using Unity.Netcode;
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
 public class CameraScript : MonoBehaviour
 {
     private Camera cameraRef;
-    [SerializeField] private GameObject PlayerObject;
+    [SerializeField] private NetworkObject PlayerObject;
     [SerializeField] private Vector3 offset = new Vector3(0f, 0f, -10f);
     [SerializeField] private float smoothSpeed = 1f;
 
@@ -17,12 +18,9 @@ public class CameraScript : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    public void SetPlayerTrack(NetworkObject playerobj)
     {
-        if(PlayerObject == null)
-        {
-            PlayerObject = GameManager.Instance.Playerobj;
-        }        
+        PlayerObject = playerobj;
     }
 
     private void FixedUpdate()
@@ -32,11 +30,13 @@ public class CameraScript : MonoBehaviour
 
     private void LerpCamPosition()
     {
-          
+        if(PlayerObject != null)
+        {
+            Vector3 desiredPosition = PlayerObject.transform.position + offset;
+            Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.deltaTime * 10f);
+            transform.position = smoothedPosition;       
+        }
 
-        Vector3 desiredPosition = PlayerObject.transform.position + offset;
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.deltaTime * 10f);
-        transform.position = smoothedPosition;
     }
 
 

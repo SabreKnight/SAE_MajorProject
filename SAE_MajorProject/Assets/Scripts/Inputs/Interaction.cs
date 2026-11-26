@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using Unity.Mathematics;
+using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
 
-public class InteractionManager : MonoBehaviour    // attach to player object
+public class InteractionManager : NetworkBehaviour    // attach to player object
 {
     public GameObject hitMarker;
     public Vector2 hitMarkerPosition;
@@ -247,5 +248,16 @@ public class InteractionManager : MonoBehaviour    // attach to player object
         }
     }
 
+    public void SetGridref()
+    {
+        if(this.gameObject.GetComponent<NetworkObject>().IsOwner)
+        {
+            grid = GameManager.Instance.UIManagerSingleton.playerGridRef;
+        }
+        else
+        {
+            Debug.Log("Attempting to assign grid reference to object not owned by client");
+        }
+    }
 
 }

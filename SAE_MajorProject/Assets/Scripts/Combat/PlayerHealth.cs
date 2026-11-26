@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
+using Unity.Netcode;
 
 public class PlayerHealth : Health_BaseClass
 {
@@ -11,6 +12,8 @@ public class PlayerHealth : Health_BaseClass
     private float TotalHealCooldown = 5f;
     private float CurrentHealCooldown;
     private bool activeHealBool;
+    private bool healthIsOwner = false;
+
     [Header("UI")]
     [SerializeField] private Slider healthSlider;
     [SerializeField] private TextMeshProUGUI healthText; 
@@ -31,8 +34,11 @@ public class PlayerHealth : Health_BaseClass
             health += value;
             Mathf.Clamp(health, 0f, fullhealth);
 
-            healthSlider.value = health;
-            healthText.text = "Health: " + health.ToString();
+            if(healthIsOwner == true)
+            {
+                healthSlider.value = health;
+                healthText.text = "Health: " + health.ToString();
+            }
 
             if(value < 0)
             {
@@ -102,6 +108,25 @@ public class PlayerHealth : Health_BaseClass
         {
             transform.position = PS.gameObject.transform.position;
         }
+
         health = fullhealth;
+        HealthGetSet = 0;
+    }
+
+    public void SetupHealthUI()
+    {
+        Debug.Log("Player object ownership status is: " + this.gameObject.GetComponent<NetworkObject>().IsOwner);
+        if(this.gameObject.GetComponent<NetworkObject>().IsOwner)
+        {
+            healthSlider = GameManager.Instance.UIManagerSingleton.playerHealthSlider;
+            healthText = GameManager.Instance.UIManagerSingleton.playerHealthText;
+            Debug.Log("Player Health UI references assigned");
+            healthIsOwner = true;
+        }
+        else
+        {
+            healthIsOwner = false;
+            Debug.Log("player object is not owned on this client, and so PLayer UI has not been assigned");
+        }
     }
 }

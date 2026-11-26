@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class PlayerRespawn : MonoBehaviour, I_DeathManager
 {
     [SerializeField] private GameObject RespawnUI;
-    [SerializeField] private Health_BaseClass playerhealth;
+    public Health_BaseClass playerhealth;
     public void CharacterDied(Health_BaseClass characterHealth)
     {
         Characterdeath();
@@ -15,7 +15,6 @@ public class PlayerRespawn : MonoBehaviour, I_DeathManager
     {
         RespawnUI.SetActive(true);
         GameManager.Instance.inputController.OverrideGetSet = true;
-
     }
 
     public void RespawnButton()
@@ -27,7 +26,6 @@ public class PlayerRespawn : MonoBehaviour, I_DeathManager
 
     private void OnEnable()
     {
-        playerhealth.charManagerRef = this;
         RespawnUI.SetActive(false);
     }
 

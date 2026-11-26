@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using Unity.Netcode;
 
 // input manager is a controller in controller, model, view networking framework
 public class InputManager_Cont : MonoBehaviour
@@ -10,7 +11,7 @@ public class InputManager_Cont : MonoBehaviour
     public InteractionManager interactionScript;
     [SerializeField] private UIManager UIManagerScript;
     private bool UIOverride = false;
-
+    private bool NetworkOverride = false;
     public bool OverrideGetSet  // this will pause the game while menus are open
     {
         get
@@ -35,7 +36,7 @@ public class InputManager_Cont : MonoBehaviour
     private InputAction moveAction;
     [Header ("Movement")]
     [SerializeField] private float moveSpeed = 0.01f; // base movement speed for the player
-    [SerializeField] private GameObject PlayerObject;   // reference to the player object
+    [SerializeField] private NetworkObject playerObjectRef;   // reference to the player object
     [SerializeField] private Vector2 moveValue; // vector  movement value, shows direction player is moving (normalised)
 
     private InputAction shiftAction;    // checks if shift / sprint is being pressed
@@ -73,11 +74,9 @@ public class InputManager_Cont : MonoBehaviour
     
     void Start()
     {
-        if(UIManagerScript == null)
-        {
-            UIManagerScript = GameManager.Instance.UIManagerSingleton;
-        }
+        NetworkOverride = true;
     }
+
     void OnEnable() // when the input script is enabled
     {
         
@@ -112,6 +111,8 @@ public class InputManager_Cont : MonoBehaviour
 
     private void Update()
     {
+        if(NetworkOverride) return;
+        
         InventoryToggle();
 
         if(OverrideGetSet == false) // inputs will be undetected if Override is active
@@ -125,6 +126,8 @@ public class InputManager_Cont : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(NetworkOverride) return;
+
         if(OverrideGetSet == false) // inputs will be undetected if Override is active
         {
             CheckPhysMisc();
@@ -254,7 +257,7 @@ public class InputManager_Cont : MonoBehaviour
     private void MovePlayer(Vector2 moveValue) // move to model and view class
     {
         //PlayerObject.transform.position += (Vector3)(moveValue * CheckSprint() * 0.01f );
-        playerMovementScript.MovePlayer(moveValue, CheckSprint());
+        playerMovementScript.MovePlayer_Rpc(moveValue, CheckSprint());
         if(moveValue != Vector2.zero)
         {
             TrueLookdirection = moveValue;
@@ -283,6 +286,13 @@ public class InputManager_Cont : MonoBehaviour
         OverrideGetSet = UIManagerScript.OpenEscMenu();
     }
 
-
+    public void SetUpPlayerObject(NetworkObject playerObject)
+    {
+        playerObjectRef = playerObject;
+        playerMovementScript = playerObject.GetComponent<PlayerMovementScript>();
+        interactionScript = playerObject.GetComponent<InteractionManager>();
+        NetworkOverride = false;
+        Debug.Log("Input managerController references for player have been assigned");
+    }
 
 }

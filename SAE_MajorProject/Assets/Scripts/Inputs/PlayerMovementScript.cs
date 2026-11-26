@@ -1,7 +1,8 @@
+using Unity.Netcode;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerMovementScript : MonoBehaviour
+public class PlayerMovementScript : NetworkBehaviour
 {
     [SerializeField] private Rigidbody2D rigidbodyRef;
     [SerializeField] private float movementSpeed = 1f;
@@ -17,7 +18,8 @@ public class PlayerMovementScript : MonoBehaviour
         }
     }
 
-    public void MovePlayer(Vector2 moveDirection, float SprintValue)
+    [Rpc(SendTo.Server)]
+    public void MovePlayer_Rpc(Vector2 moveDirection, float SprintValue)
     {
         animator.SetFloat("Speed", Mathf.Abs(moveDirection.x) + Mathf.Abs(moveDirection.y));
         if(moveDirection == Vector2.zero)
@@ -29,7 +31,6 @@ public class PlayerMovementScript : MonoBehaviour
         SetFlip(moveDirection);
         //Debug.Log("Moving player: " + moveDirection);
         rigidbodyRef.MovePosition((Vector2)transform.position + (moveDirection * SprintValue * movementSpeed));
-
     }
 
     private void SetFlip(Vector2 moveDirection)

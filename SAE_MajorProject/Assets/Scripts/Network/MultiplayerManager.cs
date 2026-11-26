@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using Unity.Services.Lobbies.Models;
+using Unity.VisualScripting;
 public class MultiplayerManager : NetworkBehaviour
 {
 
@@ -44,6 +45,9 @@ public class MultiplayerManager : NetworkBehaviour
         // assigned game object to player
         newPlayer.SpawnAsPlayerObject(ClientID);
         playerobjectList.Add(newPlayer);
+
+        newPlayer.GetComponent<SetupPlayerRefs>().AssignOwnerClientReferences_Rpc();
+        GameManager.Instance.SetupPlayerSpawn_Rpc(newPlayer);
     }
 
 }

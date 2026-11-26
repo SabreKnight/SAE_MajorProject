@@ -3,17 +3,26 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEditor;
+using TMPro;
 //using UnityEngine.EventSystems;
 
 public class UIManager : MonoBehaviour
 {
 
+    [Header ("Player UI Refs")]
+
+    public Slider playerHealthSlider;
+    public TextMeshProUGUI playerHealthText; 
+    public Grid playerGridRef;
+
+    [Header ("Other refs")]
     public InventoryManager inventory;
     [SerializeField] private GameObject InventoryPanelObject;
     [SerializeField] private GameObject HotPanelObject;
     [SerializeField] private GameObject InteractPanelObject;
     [SerializeField] private GameObject MenuPanelObject;
 
+    [Header ("Panel Lists")]
     [SerializeField] public List<UI_itemPanel> UI_InventoryPanels;
     [SerializeField] public List<UI_itemPanel> UI_HotInventoryPanels;
     [SerializeField] private List<UI_itemPanel> UI_GameInventoryPanels;

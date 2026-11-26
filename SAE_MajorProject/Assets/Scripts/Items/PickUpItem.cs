@@ -1,11 +1,12 @@
 using System.Collections;
+using System.Runtime.CompilerServices;
+using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class PickUpItem : MonoBehaviour
+public class PickUpItem : NetworkBehaviour
 {
-
     [SerializeField] private InstantiatedItem instantiatedItemRef;
 
     [Header("Pickup Cooldown")]
@@ -24,7 +25,7 @@ public class PickUpItem : MonoBehaviour
 
     [Header ("Pick Up Collision")]
 
-    [SerializeField] private GameObject playerRef = null;
+    [SerializeField] private NetworkObject playerRef = null;
     private int colliderCheckInterval = 0;
     [SerializeField] private int colliderCheckThreshold = 5;
     [SerializeField] private float ColliderCircleRadius = 2f;
@@ -32,11 +33,10 @@ public class PickUpItem : MonoBehaviour
     [SerializeField] private float PickupDistance = 0.5f;
     
 
-    // void OnEnable()
-    // {
-    //     Pickupbool = false;
-    //     StartCoroutine(DropAnimation());
-    // }
+    void OnEnable()
+    {
+        
+    }
 
     void Update()
     {
@@ -68,7 +68,7 @@ public class PickUpItem : MonoBehaviour
         {
             if(collider != null && collider.gameObject.CompareTag("Player"))
             {
-                playerRef = collider.gameObject;
+                playerRef = collider.gameObject.GetComponent<Unity.Netcode.NetworkObject>();
                 Debug.Log("Player object located: " + playerRef);
             }
         }
@@ -104,7 +104,22 @@ public class PickUpItem : MonoBehaviour
 
         if(Vector3.Distance(playerRef.transform.position, transform.position) <= PickupDistance)
         {
-            int returnvalue = playerRef.GetComponent<InteractionManager>().inventory.AddItemToInventory(instantiatedItemRef);
+            NetworkPickup_Rpc(playerRef);
+        }
+    }
+
+    [Rpc (SendTo.ClientsAndHost)]
+    private void NetworkPickup_Rpc(NetworkObjectReference playerObjRef)
+    {
+        NetworkObject playersubRef = playerObjRef;
+
+        if(!playersubRef.IsOwner)
+        {
+            Debug.Log("attempting to pick up on wrong client");
+            return;
+        }
+
+        int returnvalue = playerRef.GetComponent<InteractionManager>().inventory.AddItemToInventory(instantiatedItemRef);
 
             if(returnvalue > 0)
             {
@@ -117,7 +132,7 @@ public class PickUpItem : MonoBehaviour
             {
                 DestroyImmediate(this.gameObject);
             }
-        }
+        
     }
 
     public void SetupObject(InstantiatedItem newitem, float dropdirection, Vector3 Vect)
